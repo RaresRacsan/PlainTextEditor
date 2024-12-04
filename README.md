@@ -26,8 +26,8 @@ To run the project, you'll need:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/yourusername/MyNotepad.git
-   cd MyNotepad
+   git clone https://github.com/RaresRacsan/PlainTextEditor.git
+   cd PlainTextEditor
    ```
 
 2. Open the solution file PlainTextEditor.sln in Visual Studio.
