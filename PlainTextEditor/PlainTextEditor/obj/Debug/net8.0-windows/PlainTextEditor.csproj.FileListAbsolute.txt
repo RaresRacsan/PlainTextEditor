@@ -1,0 +1,17 @@
+C:\Users\User\Documents\GitHub\PlainTextEditor\PlainTextEditor\PlainTextEditor\bin\Debug\net8.0-windows\PlainTextEditor.exe
+C:\Users\User\Documents\GitHub\PlainTextEditor\PlainTextEditor\PlainTextEditor\bin\Debug\net8.0-windows\PlainTextEditor.deps.json
+C:\Users\User\Documents\GitHub\PlainTextEditor\PlainTextEditor\PlainTextEditor\bin\Debug\net8.0-windows\PlainTextEditor.runtimeconfig.json
+C:\Users\User\Documents\GitHub\PlainTextEditor\PlainTextEditor\PlainTextEditor\bin\Debug\net8.0-windows\PlainTextEditor.dll
+C:\Users\User\Documents\GitHub\PlainTextEditor\PlainTextEditor\PlainTextEditor\bin\Debug\net8.0-windows\PlainTextEditor.pdb
+C:\Users\User\Documents\GitHub\PlainTextEditor\PlainTextEditor\PlainTextEditor\obj\Debug\net8.0-windows\PlainTextEditor.PlainTextEditor.resources
+C:\Users\User\Documents\GitHub\PlainTextEditor\PlainTextEditor\PlainTextEditor\obj\Debug\net8.0-windows\PlainTextEditor.csproj.GenerateResource.cache
+C:\Users\User\Documents\GitHub\PlainTextEditor\PlainTextEditor\PlainTextEditor\obj\Debug\net8.0-windows\PlainTextEditor.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\Documents\GitHub\PlainTextEditor\PlainTextEditor\PlainTextEditor\obj\Debug\net8.0-windows\PlainTextEditor.AssemblyInfoInputs.cache
+C:\Users\User\Documents\GitHub\PlainTextEditor\PlainTextEditor\PlainTextEditor\obj\Debug\net8.0-windows\PlainTextEditor.AssemblyInfo.cs
+C:\Users\User\Documents\GitHub\PlainTextEditor\PlainTextEditor\PlainTextEditor\obj\Debug\net8.0-windows\PlainTextEditor.csproj.CoreCompileInputs.cache
+C:\Users\User\Documents\GitHub\PlainTextEditor\PlainTextEditor\PlainTextEditor\obj\Debug\net8.0-windows\PlainTextEditor.sourcelink.json
+C:\Users\User\Documents\GitHub\PlainTextEditor\PlainTextEditor\PlainTextEditor\obj\Debug\net8.0-windows\PlainTextEditor.dll
+C:\Users\User\Documents\GitHub\PlainTextEditor\PlainTextEditor\PlainTextEditor\obj\Debug\net8.0-windows\refint\PlainTextEditor.dll
+C:\Users\User\Documents\GitHub\PlainTextEditor\PlainTextEditor\PlainTextEditor\obj\Debug\net8.0-windows\PlainTextEditor.pdb
+C:\Users\User\Documents\GitHub\PlainTextEditor\PlainTextEditor\PlainTextEditor\obj\Debug\net8.0-windows\PlainTextEditor.genruntimeconfig.cache
+C:\Users\User\Documents\GitHub\PlainTextEditor\PlainTextEditor\PlainTextEditor\obj\Debug\net8.0-windows\ref\PlainTextEditor.dll
