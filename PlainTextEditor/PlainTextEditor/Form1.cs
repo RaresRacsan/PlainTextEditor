@@ -2,6 +2,9 @@ namespace PlainTextEditor
 {
     public partial class PlainTextEditor : Form
     {
+        private string currentFilePath = null;
+        private string originalFileContent = string.Empty;
+
         public PlainTextEditor()
         {
             InitializeComponent();
@@ -9,23 +12,39 @@ namespace PlainTextEditor
 
         private void SaveFile()
         {
+            File.WriteAllText(currentFilePath, textBoxMain.Text);
+            originalFileContent = textBoxMain.Text;
+        }
+
+        private void SaveAs()
+        {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*";
-            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+
+            if(saveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                File.WriteAllText(saveFileDialog.FileName, textBoxMain.Text);
+                currentFilePath = saveFileDialog.FileName;
+                File.WriteAllText(currentFilePath, textBoxMain.Text);
+                originalFileContent = textBoxMain.Text;
             }
         }
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(textBoxMain.Text))
+            if (!string.IsNullOrEmpty(textBoxMain.Text) && textBoxMain.Text != originalFileContent)
             {
                 var result = MessageBox.Show("Do you want to save changes?", "Unsaved Changes", MessageBoxButtons.YesNoCancel);
 
                 if (result == DialogResult.Yes)
                 {
-                    SaveFile();
+                    if (string.IsNullOrEmpty(currentFilePath))
+                    {
+                        SaveAs();
+                    }
+                    else
+                    {
+                        SaveFile();
+                    }
                 }
                 else if (result == DialogResult.Cancel)
                 {
@@ -33,6 +52,8 @@ namespace PlainTextEditor
                 }
             }
             textBoxMain.Clear();
+            currentFilePath = null;
+            originalFileContent = string.Empty;
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
@@ -42,18 +63,25 @@ namespace PlainTextEditor
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                textBoxMain.Text = File.ReadAllText(openFileDialog.FileName);
+                currentFilePath = openFileDialog.FileName;
+                originalFileContent = File.ReadAllText(currentFilePath);
+                textBoxMain.Text = File.ReadAllText(currentFilePath);
             }
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*";
-
-            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            if (string.IsNullOrEmpty(currentFilePath))
             {
-                File.WriteAllText(saveFileDialog.FileName, textBoxMain.Text);
+                SaveAs();
+            }
+            else if(textBoxMain.Text != originalFileContent)
+            {
+                SaveFile();
+            }
+            else
+            {
+                MessageBox.Show("No changes to save.", "Save", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
@@ -69,6 +97,11 @@ namespace PlainTextEditor
         private void aToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MessageBox.Show("A simple notepad created by Rares Racsan using C# and Windows Forms\nFor more details check @RaresRacsan on github", "About");
+        }
+
+        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveAs();
         }
     }
 }

@@ -84,6 +84,7 @@
             saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
             saveAsToolStripMenuItem.Size = new Size(224, 26);
             saveAsToolStripMenuItem.Text = "Save As";
+            saveAsToolStripMenuItem.Click += saveAsToolStripMenuItem_Click;
             // 
             // exitToolStripMenuItem
             // 
@@ -102,7 +103,7 @@
             // aToolStripMenuItem
             // 
             aToolStripMenuItem.Name = "aToolStripMenuItem";
-            aToolStripMenuItem.Size = new Size(224, 26);
+            aToolStripMenuItem.Size = new Size(133, 26);
             aToolStripMenuItem.Text = "About";
             aToolStripMenuItem.Click += aToolStripMenuItem_Click;
             // 
@@ -119,6 +120,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = SystemColors.ActiveCaptionText;
             ClientSize = new Size(800, 450);
             Controls.Add(textBoxMain);
             Controls.Add(menuStrip1);
