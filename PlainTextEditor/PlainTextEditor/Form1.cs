@@ -8,12 +8,20 @@ namespace PlainTextEditor
         public PlainTextEditor()
         {
             InitializeComponent();
+            UpdateTitle();
+        }
+
+        private void UpdateTitle()
+        {
+            string fileName = string.IsNullOrEmpty(currentFilePath) ? "New File " : Path.GetFileName(currentFilePath);
+            this.Text = $"PlainTextEditor - {fileName}";
         }
 
         private void SaveFile()
         {
             File.WriteAllText(currentFilePath, textBoxMain.Text);
             originalFileContent = textBoxMain.Text;
+            UpdateTitle();
         }
 
         private void SaveAs()
@@ -26,6 +34,7 @@ namespace PlainTextEditor
                 currentFilePath = saveFileDialog.FileName;
                 File.WriteAllText(currentFilePath, textBoxMain.Text);
                 originalFileContent = textBoxMain.Text;
+                UpdateTitle();
             }
         }
 
@@ -54,6 +63,7 @@ namespace PlainTextEditor
             textBoxMain.Clear();
             currentFilePath = null;
             originalFileContent = string.Empty;
+            UpdateTitle();
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
@@ -66,6 +76,7 @@ namespace PlainTextEditor
                 currentFilePath = openFileDialog.FileName;
                 originalFileContent = File.ReadAllText(currentFilePath);
                 textBoxMain.Text = File.ReadAllText(currentFilePath);
+                UpdateTitle();
             }
         }
 
@@ -96,7 +107,7 @@ namespace PlainTextEditor
 
         private void aToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("A simple notepad created by Rares Racsan using C# and Windows Forms\nFor more details check @RaresRacsan on github", "About");
+            MessageBox.Show("A simple notepad created by Rares Racsan using C# and Windows Forms\nFor more details check @RaresRacsan on github.", "About");
         }
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
