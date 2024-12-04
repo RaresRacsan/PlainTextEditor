@@ -65,10 +65,37 @@ namespace PlainTextEditor
 
             menuStrip.BackColor = Color.LightGray;
             menuStrip.ForeColor = Color.Black;
+
+            // Set background color for white theme (light theme)
+            editToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);  // White background
+            aToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);  // White background
+            themeToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);  // White background
+            lightThemeToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);  // White background
+            darkThemeToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);  // White background
+            saveAsToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);  // White background
+            newToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);  // White background
+            saveToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);  // White background
+            exitToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);  // White background
+            openToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);  // White background
+
+            // Set foreground color (text color) for white theme (light theme)
+            editToolStripMenuItem.ForeColor = Color.Black;  // Black text
+            aToolStripMenuItem.ForeColor = Color.Black;  // Black text
+            themeToolStripMenuItem.ForeColor = Color.Black;  // Black text
+            lightThemeToolStripMenuItem.ForeColor = Color.Black;  // Black text
+            darkThemeToolStripMenuItem.ForeColor = Color.Black;  // Black text
+            saveAsToolStripMenuItem.ForeColor = Color.Black;  // Black text
+            newToolStripMenuItem.ForeColor = Color.Black;  // Black text
+            saveToolStripMenuItem.ForeColor = Color.Black;  // Black text
+            exitToolStripMenuItem.ForeColor = Color.Black;  // Black text
+            openToolStripMenuItem.ForeColor = Color.Black;  // Black text
+
         }
 
         private void SetDarkTheme()
         {
+            SetTitleBarColor();
+
             this.BackColor = Color.FromArgb(30, 30, 30);
             this.ForeColor = Color.FromArgb(30, 30, 30);
             textBoxMain.BackColor = Color.FromArgb(30, 30, 30);
@@ -78,7 +105,26 @@ namespace PlainTextEditor
             menuStrip.BackColor = Color.FromArgb(40, 40, 40);
             menuStrip.ForeColor = Color.White;
 
-            SetTitleBarColor();
+            editToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
+            aToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
+            themeToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
+            lightThemeToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
+            darkThemeToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
+            saveAsToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
+            newToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
+            saveToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
+            exitToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
+            openToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
+            editToolStripMenuItem.ForeColor = Color.White;
+            aToolStripMenuItem.ForeColor = Color.White;
+            themeToolStripMenuItem.ForeColor = Color.White;
+            lightThemeToolStripMenuItem.ForeColor = Color.White;
+            darkThemeToolStripMenuItem.ForeColor = Color.White;
+            saveAsToolStripMenuItem.ForeColor = Color.White;
+            newToolStripMenuItem.ForeColor = Color.White;
+            saveToolStripMenuItem.ForeColor = Color.White;
+            exitToolStripMenuItem.ForeColor = Color.White;
+            openToolStripMenuItem.ForeColor = Color.White;
         }
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
