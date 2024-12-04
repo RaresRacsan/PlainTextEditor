@@ -1,6 +1,4 @@
 # PlainTextEditor
-![image](https://github.com/user-attachments/assets/a6158d32-3125-4334-a7a7-f4a4ea16b41a)
-![image](https://github.com/user-attachments/assets/2755ff9b-30b6-4355-92f9-04c8035d60af)
 PlainTextEditor is a simple text editor built using C# and Windows Forms. It provides basic text editing functionality, including features like creating new files, opening existing files, saving files, and changing the app's theme (light/dark).
 
 ## Features
@@ -48,7 +46,8 @@ Usage
 
 Screenshot
 
-<!-- Add a screenshot image if you have one -->
+![image](https://github.com/user-attachments/assets/a6158d32-3125-4334-a7a7-f4a4ea16b41a)
+![image](https://github.com/user-attachments/assets/2755ff9b-30b6-4355-92f9-04c8035d60af)
 Code Overview
 
 The project is built using Windows Forms, and the code is organized as follows:
