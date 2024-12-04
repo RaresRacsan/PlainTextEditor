@@ -1,3 +1,5 @@
+using System.Runtime.InteropServices;
+
 namespace PlainTextEditor
 {
     public partial class PlainTextEditor : Form
@@ -9,6 +11,21 @@ namespace PlainTextEditor
         {
             InitializeComponent();
             UpdateTitle();
+            SetDarkTheme();
+        }
+
+        [DllImport("dwmapi.dll", PreserveSig = false)]
+        public static extern void DwmSetWindowAttribute(IntPtr hwnd, DWMWINDOWATTRIBUTE dwAttribute, ref uint pvAttribute, uint cbAttribute);
+
+        public enum DWMWINDOWATTRIBUTE
+        {
+            DWMWA_USE_IMMERSIVE_DARK_MODE = 20,
+        }
+
+        private void SetTitleBarColor()
+        {
+            uint value = 1; // Enable dark mode for the title bar
+            DwmSetWindowAttribute(this.Handle, DWMWINDOWATTRIBUTE.DWMWA_USE_IMMERSIVE_DARK_MODE, ref value, (uint)Marshal.SizeOf(value));
         }
 
         private void UpdateTitle()
@@ -29,13 +46,39 @@ namespace PlainTextEditor
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*";
 
-            if(saveFileDialog.ShowDialog() == DialogResult.OK)
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
                 currentFilePath = saveFileDialog.FileName;
                 File.WriteAllText(currentFilePath, textBoxMain.Text);
                 originalFileContent = textBoxMain.Text;
                 UpdateTitle();
             }
+        }
+
+        private void SetLightTheme()
+        {
+            this.BackColor = Color.White;
+            this.ForeColor = Color.Black;
+            textBoxMain.BackColor = Color.White;
+            textBoxMain.ForeColor = Color.Black;
+            textBoxMain.BorderStyle = BorderStyle.None;
+
+            menuStrip.BackColor = Color.LightGray;
+            menuStrip.ForeColor = Color.Black;
+        }
+
+        private void SetDarkTheme()
+        {
+            this.BackColor = Color.FromArgb(30, 30, 30);
+            this.ForeColor = Color.FromArgb(30, 30, 30);
+            textBoxMain.BackColor = Color.FromArgb(30, 30, 30);
+            textBoxMain.ForeColor = Color.White;
+            textBoxMain.BorderStyle = BorderStyle.None;            
+
+            menuStrip.BackColor = Color.FromArgb(40, 40, 40);
+            menuStrip.ForeColor = Color.White;
+
+            SetTitleBarColor();
         }
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
@@ -86,7 +129,7 @@ namespace PlainTextEditor
             {
                 SaveAs();
             }
-            else if(textBoxMain.Text != originalFileContent)
+            else if (textBoxMain.Text != originalFileContent)
             {
                 SaveFile();
             }
@@ -113,6 +156,16 @@ namespace PlainTextEditor
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveAs();
+        }
+
+        private void lightThemeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SetLightTheme();
+        }
+
+        private void darkThemeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SetDarkTheme();
         }
     }
 }
