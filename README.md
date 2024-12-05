@@ -60,10 +60,9 @@ To run the project, you'll need:
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
-Acknowledgements
 
 ## Contributing
 
 Feel free to fork this repository and submit pull requests. If you encounter any bugs or want to request new features, feel free to open an issue!
 
-Thank you for using MyNotepad!
+Thank you for using PlainTextEditor!
