@@ -1,217 +1,360 @@
 using System.Runtime.InteropServices;
+using System.IO;
+using System.Drawing; // <----- Addition: Required for CustomColorTable
+using System.Windows.Forms; // <----- Addition: Required for CustomColorTable
 
 namespace PlainTextEditor
 {
-    public partial class PlainTextEditor : Form
-    {
-        private string currentFilePath = null;
-        private string originalFileContent = string.Empty;
-
-        public PlainTextEditor()
+        public partial class PlainTextEditor : Form
         {
-            InitializeComponent();
-            UpdateTitle();
-            SetDarkTheme();
-        }
+                private string currentFilePath = null;
+                private string originalFileContent = string.Empty;
 
-        [DllImport("dwmapi.dll", PreserveSig = false)]
-        public static extern void DwmSetWindowAttribute(IntPtr hwnd, DWMWINDOWATTRIBUTE dwAttribute, ref uint pvAttribute, uint cbAttribute);
-
-        public enum DWMWINDOWATTRIBUTE
-        {
-            DWMWA_USE_IMMERSIVE_DARK_MODE = 20,
-        }
-
-        private void SetTitleBarColor()
-        {
-            uint value = 1; // Enable dark mode for the title bar
-            DwmSetWindowAttribute(this.Handle, DWMWINDOWATTRIBUTE.DWMWA_USE_IMMERSIVE_DARK_MODE, ref value, (uint)Marshal.SizeOf(value));
-        }
-
-        private void UpdateTitle()
-        {
-            string fileName = string.IsNullOrEmpty(currentFilePath) ? "New File " : Path.GetFileName(currentFilePath);
-            this.Text = $"PlainTextEditor - {fileName}";
-        }
-
-        private void SaveFile()
-        {
-            File.WriteAllText(currentFilePath, textBoxMain.Text);
-            originalFileContent = textBoxMain.Text;
-            UpdateTitle();
-        }
-
-        private void SaveAs()
-        {
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*";
-
-            if (saveFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                currentFilePath = saveFileDialog.FileName;
-                File.WriteAllText(currentFilePath, textBoxMain.Text);
-                originalFileContent = textBoxMain.Text;
-                UpdateTitle();
-            }
-        }
-
-        private void SetLightTheme()
-        {
-            this.BackColor = Color.White;
-            this.ForeColor = Color.Black;
-            textBoxMain.BackColor = Color.White;
-            textBoxMain.ForeColor = Color.Black;
-            textBoxMain.BorderStyle = BorderStyle.None;
-
-            menuStrip.BackColor = Color.LightGray;
-            menuStrip.ForeColor = Color.Black;
-
-            // Set background color for white theme (light theme)
-            editToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);  // White background
-            aToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);  // White background
-            themeToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);  // White background
-            lightThemeToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);  // White background
-            darkThemeToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);  // White background
-            saveAsToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);  // White background
-            newToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);  // White background
-            saveToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);  // White background
-            exitToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);  // White background
-            openToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);  // White background
-
-            // Set foreground color (text color) for white theme (light theme)
-            editToolStripMenuItem.ForeColor = Color.Black;  // Black text
-            aToolStripMenuItem.ForeColor = Color.Black;  // Black text
-            themeToolStripMenuItem.ForeColor = Color.Black;  // Black text
-            lightThemeToolStripMenuItem.ForeColor = Color.Black;  // Black text
-            darkThemeToolStripMenuItem.ForeColor = Color.Black;  // Black text
-            saveAsToolStripMenuItem.ForeColor = Color.Black;  // Black text
-            newToolStripMenuItem.ForeColor = Color.Black;  // Black text
-            saveToolStripMenuItem.ForeColor = Color.Black;  // Black text
-            exitToolStripMenuItem.ForeColor = Color.Black;  // Black text
-            openToolStripMenuItem.ForeColor = Color.Black;  // Black text
-
-        }
-
-        private void SetDarkTheme()
-        {
-            SetTitleBarColor();
-
-            this.BackColor = Color.FromArgb(30, 30, 30);
-            this.ForeColor = Color.FromArgb(30, 30, 30);
-            textBoxMain.BackColor = Color.FromArgb(30, 30, 30);
-            textBoxMain.ForeColor = Color.White;
-            textBoxMain.BorderStyle = BorderStyle.None;            
-
-            menuStrip.BackColor = Color.FromArgb(40, 40, 40);
-            menuStrip.ForeColor = Color.White;
-
-            editToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
-            aToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
-            themeToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
-            lightThemeToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
-            darkThemeToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
-            saveAsToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
-            newToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
-            saveToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
-            exitToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
-            openToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
-            editToolStripMenuItem.ForeColor = Color.White;
-            aToolStripMenuItem.ForeColor = Color.White;
-            themeToolStripMenuItem.ForeColor = Color.White;
-            lightThemeToolStripMenuItem.ForeColor = Color.White;
-            darkThemeToolStripMenuItem.ForeColor = Color.White;
-            saveAsToolStripMenuItem.ForeColor = Color.White;
-            newToolStripMenuItem.ForeColor = Color.White;
-            saveToolStripMenuItem.ForeColor = Color.White;
-            exitToolStripMenuItem.ForeColor = Color.White;
-            openToolStripMenuItem.ForeColor = Color.White;
-        }
-
-        private void newToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (!string.IsNullOrEmpty(textBoxMain.Text) && textBoxMain.Text != originalFileContent)
-            {
-                var result = MessageBox.Show("Do you want to save changes?", "Unsaved Changes", MessageBoxButtons.YesNoCancel);
-
-                if (result == DialogResult.Yes)
+                public PlainTextEditor()
                 {
-                    if (string.IsNullOrEmpty(currentFilePath))
-                    {
+                        InitializeComponent();
+                        UpdateTitle();
+                        SetDarkTheme();
+                        AssignCustomRenderer(); // <----- Addition: Assign custom renderer after initializing components
+                }
+
+                [DllImport("dwmapi.dll", PreserveSig = false)]
+                public static extern void DwmSetWindowAttribute(IntPtr hwnd, DWMWINDOWATTRIBUTE dwAttribute, ref uint pvAttribute, uint cbAttribute);
+
+                public enum DWMWINDOWATTRIBUTE
+                {
+                        DWMWA_USE_IMMERSIVE_DARK_MODE = 20,
+                }
+
+                private void SetTitleBarColor()
+                {
+                        uint value = 1; // Enable dark mode for the title bar
+                        DwmSetWindowAttribute(this.Handle, DWMWINDOWATTRIBUTE.DWMWA_USE_IMMERSIVE_DARK_MODE, ref value, (uint)Marshal.SizeOf(value));
+                }
+
+                private void UpdateTitle()
+                {
+                        string fileName = string.IsNullOrEmpty(currentFilePath) ? "New File" : Path.GetFileName(currentFilePath);
+                        this.Text = $"PlainTextEditor - {fileName}";
+                }
+
+                private void SaveFile()
+                {
+                        File.WriteAllText(currentFilePath, textBoxMain.Text);
+                        originalFileContent = textBoxMain.Text;
+                        UpdateTitle();
+                }
+
+                private void SaveAs()
+                {
+                        SaveFileDialog saveFileDialog = new SaveFileDialog();
+                        saveFileDialog.Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*";
+
+                        if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                        {
+                                currentFilePath = saveFileDialog.FileName;
+                                File.WriteAllText(currentFilePath, textBoxMain.Text);
+                                originalFileContent = textBoxMain.Text;
+                                UpdateTitle();
+                        }
+                }
+
+                private void SetLightTheme()
+                {
+                        this.BackColor = Color.White;
+                        this.ForeColor = Color.Black;
+                        textBoxMain.BackColor = Color.White;
+                        textBoxMain.ForeColor = Color.Black;
+                        textBoxMain.BorderStyle = BorderStyle.None;
+
+                        menuStrip.BackColor = Color.LightGray;
+                        menuStrip.ForeColor = Color.Black;
+
+                        // Set background color for white theme (light theme)
+                        // Commented out the explicit white background to maintain consistency
+                        // editToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);  // White background
+                        aToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);  // White background
+                        themeToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);  // White background
+                        lightThemeToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);  // White background
+                        darkThemeToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);  // White background
+                        saveAsToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);  // White background
+                        newToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);  // White background
+                        saveToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);  // White background
+                        exitToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);  // White background
+                        openToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);  // White background
+
+                        // Set foreground color (text color) for white theme (light theme)
+                        editToolStripMenuItem.ForeColor = Color.Black;  // Black text
+                        aToolStripMenuItem.ForeColor = Color.Black;  // Black text
+                        themeToolStripMenuItem.ForeColor = Color.Black;  // Black text
+                        lightThemeToolStripMenuItem.ForeColor = Color.Black;  // Black text
+                        darkThemeToolStripMenuItem.ForeColor = Color.Black;  // Black text
+                        saveAsToolStripMenuItem.ForeColor = Color.Black;  // Black text
+                        newToolStripMenuItem.ForeColor = Color.Black;  // Black text
+                        saveToolStripMenuItem.ForeColor = Color.Black;  // Black text
+                        exitToolStripMenuItem.ForeColor = Color.Black;  // Black text
+                        openToolStripMenuItem.ForeColor = Color.Black;  // Black text
+
+                        // <----- Addition: Ensure Edit button matches the MenuStrip background in light mode ----->
+                        editToolStripMenuItem.BackColor = menuStrip.BackColor;  // Set to LightGray to match MenuStrip
+                                                                                // <----- Addition ends ----->
+
+                        AssignCustomRenderer(); // <----- Addition: Update renderer when theme changes
+                }
+
+                private void SetDarkTheme()
+                {
+                        SetTitleBarColor();
+
+                        this.BackColor = Color.FromArgb(30, 30, 30);
+                        this.ForeColor = Color.FromArgb(30, 30, 30);
+                        textBoxMain.BackColor = Color.FromArgb(30, 30, 30);
+                        textBoxMain.ForeColor = Color.White;
+                        textBoxMain.BorderStyle = BorderStyle.None;
+
+                        menuStrip.BackColor = Color.FromArgb(40, 40, 40);
+                        menuStrip.ForeColor = Color.White;
+
+                        editToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
+                        aToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
+                        themeToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
+                        lightThemeToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
+                        darkThemeToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
+                        saveAsToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
+                        newToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
+                        saveToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
+                        exitToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
+                        openToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
+                        editToolStripMenuItem.ForeColor = Color.White;
+                        aToolStripMenuItem.ForeColor = Color.White;
+                        themeToolStripMenuItem.ForeColor = Color.White;
+                        lightThemeToolStripMenuItem.ForeColor = Color.White;
+                        darkThemeToolStripMenuItem.ForeColor = Color.White;
+                        saveAsToolStripMenuItem.ForeColor = Color.White;
+                        newToolStripMenuItem.ForeColor = Color.White;
+                        saveToolStripMenuItem.ForeColor = Color.White;
+                        exitToolStripMenuItem.ForeColor = Color.White;
+                        openToolStripMenuItem.ForeColor = Color.White;
+
+                        AssignCustomRenderer(); // <----- Addition: Update renderer when theme changes
+                }
+
+                private void newToolStripMenuItem_Click(object sender, EventArgs e)
+                {
+                        if (!string.IsNullOrEmpty(textBoxMain.Text) && textBoxMain.Text != originalFileContent)
+                        {
+                                var result = MessageBox.Show("Do you want to save changes?", "Unsaved Changes", MessageBoxButtons.YesNoCancel);
+
+                                if (result == DialogResult.Yes)
+                                {
+                                        if (string.IsNullOrEmpty(currentFilePath))
+                                        {
+                                                SaveAs();
+                                        }
+                                        else
+                                        {
+                                                SaveFile();
+                                        }
+                                }
+                                else if (result == DialogResult.Cancel)
+                                {
+                                        return;
+                                }
+                        }
+                        textBoxMain.Clear();
+                        currentFilePath = null;
+                        originalFileContent = string.Empty;
+                        UpdateTitle();
+                }
+
+                private void openToolStripMenuItem_Click(object sender, EventArgs e)
+                {
+                        OpenFileDialog openFileDialog = new OpenFileDialog();
+                        openFileDialog.Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*";
+
+                        if (openFileDialog.ShowDialog() == DialogResult.OK)
+                        {
+                                currentFilePath = openFileDialog.FileName;
+                                originalFileContent = File.ReadAllText(currentFilePath);
+                                textBoxMain.Text = File.ReadAllText(currentFilePath);
+                                UpdateTitle();
+                        }
+                }
+
+                private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+                {
+                        if (string.IsNullOrEmpty(currentFilePath))
+                        {
+                                SaveAs();
+                        }
+                        else if (textBoxMain.Text != originalFileContent)
+                        {
+                                SaveFile();
+                        }
+                        else
+                        {
+                                MessageBox.Show("No changes to save.", "Save", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                }
+
+                private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+                {
+                        var result = MessageBox.Show("Are you sure you want to exit?", "Exit application", MessageBoxButtons.YesNo);
+                        if (result == DialogResult.Yes)
+                        {
+                                Application.Exit();
+                        }
+                }
+
+                private void aToolStripMenuItem_Click(object sender, EventArgs e)
+                {
+                        MessageBox.Show("A simple notepad created by Rares Racsan using C# and Windows Forms\nFor more details check @RaresRacsan on github.", "About");
+                }
+
+                private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+                {
                         SaveAs();
-                    }
-                    else
-                    {
-                        SaveFile();
-                    }
                 }
-                else if (result == DialogResult.Cancel)
+
+                private void lightThemeToolStripMenuItem_Click(object sender, EventArgs e)
                 {
-                    return;
+                        SetLightTheme();
                 }
-            }
-            textBoxMain.Clear();
-            currentFilePath = null;
-            originalFileContent = string.Empty;
-            UpdateTitle();
-        }
 
-        private void openToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*";
+                private void darkThemeToolStripMenuItem_Click(object sender, EventArgs e)
+                {
+                        SetDarkTheme();
+                }
 
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                currentFilePath = openFileDialog.FileName;
-                originalFileContent = File.ReadAllText(currentFilePath);
-                textBoxMain.Text = File.ReadAllText(currentFilePath);
-                UpdateTitle();
-            }
-        }
+                // <----- Addition: CustomColorTable class starts ----->
 
-        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(currentFilePath))
-            {
-                SaveAs();
-            }
-            else if (textBoxMain.Text != originalFileContent)
-            {
-                SaveFile();
-            }
-            else
-            {
-                MessageBox.Show("No changes to save.", "Save", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-        }
+                // CustomColorTable class to define custom colors for the MenuStrip and remove borders
+                public class CustomColorTable : ProfessionalColorTable
+                {
+                        private bool isDarkTheme;
 
-        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var result = MessageBox.Show("Are you sure you want to exit?", "Exit application", MessageBoxButtons.YesNo);
-            if (result == DialogResult.Yes)
-            {
-                Application.Exit();
-            }
-        }
+                        public CustomColorTable(bool darkTheme)
+                        {
+                                isDarkTheme = darkTheme;
+                        }
 
-        private void aToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("A simple notepad created by Rares Racsan using C# and Windows Forms\nFor more details check @RaresRacsan on github.", "About");
-        }
+                        public override Color MenuItemSelected
+                        {
+                                get
+                                {
+                                        return isDarkTheme ? Color.FromArgb(60, 60, 60) : Color.LightBlue;
+                                }
+                        }
 
-        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            SaveAs();
-        }
+                        public override Color MenuItemSelectedGradientBegin
+                        {
+                                get
+                                {
+                                        return isDarkTheme ? Color.FromArgb(60, 60, 60) : Color.LightBlue;
+                                }
+                        }
 
-        private void lightThemeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            SetLightTheme();
-        }
+                        public override Color MenuItemSelectedGradientEnd
+                        {
+                                get
+                                {
+                                        return isDarkTheme ? Color.FromArgb(60, 60, 60) : Color.LightBlue;
+                                }
+                        }
 
-        private void darkThemeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            SetDarkTheme();
+                        public override Color MenuItemBorder
+                        {
+                                get
+                                {
+                                        return Color.Transparent; // Removes the border around menu items
+                                }
+                        }
+
+                        public override Color ToolStripBorder
+                        {
+                                get
+                                {
+                                        return Color.Transparent; // Removes the border around the MenuStrip
+                                }
+                        }
+
+
+                        public override Color ImageMarginGradientBegin
+                        {
+                                get
+                                {
+                                        return isDarkTheme ? Color.FromArgb(40, 40, 40) : Color.LightGray;
+                                }
+                        }
+
+                        public override Color ImageMarginGradientMiddle
+                        {
+                                get
+                                {
+                                        return isDarkTheme ? Color.FromArgb(40, 40, 40) : Color.LightGray;
+                                }
+                        }
+
+                        public override Color ImageMarginGradientEnd
+                        {
+                                get
+                                {
+                                        return isDarkTheme ? Color.FromArgb(40, 40, 40) : Color.LightGray;
+                                }
+                        }
+
+                        public override Color MenuItemPressedGradientBegin
+                        {
+                                get
+                                {
+                                        return isDarkTheme ? Color.FromArgb(80, 80, 80) : Color.SkyBlue;
+                                }
+                        }
+
+                        public override Color MenuItemPressedGradientEnd
+                        {
+                                get
+                                {
+                                        return isDarkTheme ? Color.FromArgb(80, 80, 80) : Color.SkyBlue;
+                                }
+                        }
+
+                        public override Color MenuItemPressedGradientMiddle
+                        {
+                                get
+                                {
+                                        return isDarkTheme ? Color.FromArgb(80, 80, 80) : Color.SkyBlue;
+                                }
+                        }
+
+                        // Customize the background color of the dropdown menu
+                        public override Color ToolStripDropDownBackground
+                        {
+                                get
+                                {
+                                        return isDarkTheme ? Color.FromArgb(40, 40, 40) : Color.White;
+                                }
+                        }
+                }
+
+                // <----- Addition: CustomColorTable class ends ----->
+
+                // <----- Addition: AssignCustomRenderer method starts ----->
+
+                // Method to assign the custom renderer to the MenuStrip
+                private void AssignCustomRenderer()
+                {
+                        menuStrip.Renderer = new ToolStripProfessionalRenderer(new CustomColorTable(IsDarkTheme()));
+                }
+
+                // Helper method to determine the current theme
+                private bool IsDarkTheme()
+                {
+
+                        return menuStrip.BackColor == Color.FromArgb(40, 40, 40);
+                }
+
+                // <----- Addition: AssignCustomRenderer method ends ----->
+
         }
-    }
 }
