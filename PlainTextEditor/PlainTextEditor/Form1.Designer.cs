@@ -108,20 +108,20 @@
             // 
             themeToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { lightThemeToolStripMenuItem, darkThemeToolStripMenuItem });
             themeToolStripMenuItem.Name = "themeToolStripMenuItem";
-            themeToolStripMenuItem.Size = new Size(224, 26);
+            themeToolStripMenuItem.Size = new Size(137, 26);
             themeToolStripMenuItem.Text = "Theme";
             // 
             // lightThemeToolStripMenuItem
             // 
             lightThemeToolStripMenuItem.Name = "lightThemeToolStripMenuItem";
-            lightThemeToolStripMenuItem.Size = new Size(224, 26);
+            lightThemeToolStripMenuItem.Size = new Size(174, 26);
             lightThemeToolStripMenuItem.Text = "Light Theme";
             lightThemeToolStripMenuItem.Click += lightThemeToolStripMenuItem_Click;
             // 
             // darkThemeToolStripMenuItem
             // 
             darkThemeToolStripMenuItem.Name = "darkThemeToolStripMenuItem";
-            darkThemeToolStripMenuItem.Size = new Size(224, 26);
+            darkThemeToolStripMenuItem.Size = new Size(174, 26);
             darkThemeToolStripMenuItem.Text = "Dark Theme";
             darkThemeToolStripMenuItem.Click += darkThemeToolStripMenuItem_Click;
             // 
@@ -147,6 +147,7 @@
             textBoxMain.Name = "textBoxMain";
             textBoxMain.Size = new Size(800, 422);
             textBoxMain.TabIndex = 1;
+            textBoxMain.TextChanged += textBoxMain_TextChanged;
             // 
             // PlainTextEditor
             // 
