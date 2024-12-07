@@ -15,14 +15,19 @@ namespace PlainTextEditor
         private int words = 0;
         private int characters = 0;
 
+        ToolStripMenuItem sizeToolStripMenuItem = new ToolStripMenuItem("Size");
+
+
         public PlainTextEditor()
         {
             InitializeComponent();
             InitializeStatusStrip();
+            editTextSize();
             UpdateTitle();
             SetDarkTheme();
             AssignCustomRenderer(); // <----- Addition: Assign custom renderer after initializing components
             UpdateStatusCounts();
+
         }
 
         private void InitializeStatusStrip()
@@ -102,6 +107,15 @@ namespace PlainTextEditor
             menuStrip.BackColor = Color.LightGray;
             menuStrip.ForeColor = Color.Black;
 
+            sizeToolStripMenuItem.BackColor = Color.White;
+            sizeToolStripMenuItem.ForeColor = menuStrip.ForeColor;
+
+            foreach (ToolStripItem item in sizeToolStripMenuItem.DropDownItems)
+            {
+                item.BackColor = Color.White;
+                item.ForeColor = menuStrip.ForeColor;
+            }
+
             // Set background color for white theme (light theme)
             // Commented out the explicit white background to maintain consistency
             // editToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);  // White background
@@ -151,6 +165,15 @@ namespace PlainTextEditor
 
             menuStrip.BackColor = Color.FromArgb(40, 40, 40);
             menuStrip.ForeColor = Color.White;
+
+            sizeToolStripMenuItem.BackColor = menuStrip.BackColor;
+            sizeToolStripMenuItem.ForeColor = menuStrip.ForeColor;
+
+            foreach (ToolStripItem item in sizeToolStripMenuItem.DropDownItems)
+            {
+                item.BackColor = menuStrip.BackColor;
+                item.ForeColor = menuStrip.ForeColor;
+            }
 
             editToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
             aToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
@@ -412,6 +435,72 @@ namespace PlainTextEditor
         private void textBoxMain_TextChanged(object sender, EventArgs e)
         {
             UpdateStatusCounts();
+        }
+
+        private void ChangeFontSize(int newSize)
+        {
+            textBoxMain.Font = new Font(textBoxMain.Font.FontFamily, newSize);
+        }
+
+        private void CustomFontSize_Click(object sender, EventArgs e)
+        {
+            using (var inputDialog = new Form())
+            {
+                inputDialog.Text = "Set Custom Font Size";
+                inputDialog.Size = new Size(300, 150);
+
+                var label = new Label { Text = "Enter font size:", Left = 10, Top = 10, Width = 250 };
+                var textBox = new TextBox { Left = 10, Top = 40, Width = 250 };
+                var okButton = new Button { Text = "OK", Left = 10, Top = 70, Width = 80 };
+                var cancelButton = new Button { Text = "Cancel", Left = 100, Top = 70, Width = 80 };
+
+                okButton.Click += (s, e) =>
+                {
+                    if (int.TryParse(textBox.Text, out int newSize) && newSize > 0)
+                    {
+                        ChangeFontSize(newSize);
+                        inputDialog.DialogResult = DialogResult.OK;
+                        inputDialog.Close();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Please enter a valid positive number.", "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                };
+
+                cancelButton.Click += (s, e) =>
+                {
+                    inputDialog.DialogResult = DialogResult.Cancel;
+                    inputDialog.Close();
+                };
+
+                inputDialog.Controls.Add(label);
+                inputDialog.Controls.Add(textBox);
+                inputDialog.Controls.Add(okButton);
+                inputDialog.Controls.Add(cancelButton);
+
+                inputDialog.ShowDialog();
+            }
+        }
+
+        private void editTextSize()
+        {
+            // Size submenu
+            editToolStripMenuItem.DropDownItems.Add(sizeToolStripMenuItem);
+
+            // Add size options
+            string[] fontSizes = { "8", "12", "14", "18", "24" };
+            foreach (var size in fontSizes)
+            {
+                ToolStripMenuItem sizeOption = new ToolStripMenuItem(size);
+                sizeOption.Click += (s, e) => ChangeFontSize(int.Parse(size));
+                sizeToolStripMenuItem.DropDownItems.Add(sizeOption);
+            }
+
+            // Add a "Custom Size..." option
+            ToolStripMenuItem customSizeOption = new ToolStripMenuItem("Custom Size...");
+            customSizeOption.Click += CustomFontSize_Click;
+            sizeToolStripMenuItem.DropDownItems.Add(customSizeOption);
         }
     }
 }

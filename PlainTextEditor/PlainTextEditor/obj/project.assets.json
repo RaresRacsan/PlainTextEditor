@@ -8,23 +8,23 @@
     "net8.0-windows7.0": []
   },
   "packageFolders": {
-    "C:\\Users\\User\\.nuget\\packages\\": {},
+    "C:\\Users\\Rares\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\User\\Documents\\GitHub\\PlainTextEditor\\PlainTextEditor\\PlainTextEditor\\PlainTextEditor.csproj",
+      "projectUniqueName": "C:\\Users\\Rares\\Documents\\GitHub\\PlainTextEditor\\PlainTextEditor\\PlainTextEditor\\PlainTextEditor.csproj",
       "projectName": "PlainTextEditor",
-      "projectPath": "C:\\Users\\User\\Documents\\GitHub\\PlainTextEditor\\PlainTextEditor\\PlainTextEditor\\PlainTextEditor.csproj",
-      "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\User\\Documents\\GitHub\\PlainTextEditor\\PlainTextEditor\\PlainTextEditor\\obj\\",
+      "projectPath": "C:\\Users\\Rares\\Documents\\GitHub\\PlainTextEditor\\PlainTextEditor\\PlainTextEditor\\PlainTextEditor.csproj",
+      "packagesPath": "C:\\Users\\Rares\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Rares\\Documents\\GitHub\\PlainTextEditor\\PlainTextEditor\\PlainTextEditor\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Rares\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -45,13 +45,7 @@
         "warnAsError": [
           "NU1605"
         ]
-      },
-      "restoreAuditProperties": {
-        "enableAudit": "true",
-        "auditLevel": "low",
-        "auditMode": "direct"
-      },
-      "SdkAnalysisLevel": "9.0.100"
+      }
     },
     "frameworks": {
       "net8.0-windows7.0": {
@@ -75,7 +69,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
