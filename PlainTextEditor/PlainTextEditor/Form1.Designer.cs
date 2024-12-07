@@ -109,7 +109,7 @@
             // 
             themeToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { lightThemeToolStripMenuItem, darkThemeToolStripMenuItem });
             themeToolStripMenuItem.Name = "themeToolStripMenuItem";
-            themeToolStripMenuItem.Size = new Size(180, 22);
+            themeToolStripMenuItem.Size = new Size(110, 22);
             themeToolStripMenuItem.Text = "Theme";
             // 
             // lightThemeToolStripMenuItem
@@ -143,6 +143,7 @@
             // textBoxMain
             // 
             textBoxMain.Dock = DockStyle.Fill;
+            textBoxMain.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             textBoxMain.Location = new Point(0, 24);
             textBoxMain.Margin = new Padding(3, 2, 3, 2);
             textBoxMain.Multiline = true;

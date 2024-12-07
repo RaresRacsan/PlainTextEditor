@@ -54,7 +54,6 @@ namespace PlainTextEditor
             }
         }
 
-
         [DllImport("dwmapi.dll", PreserveSig = false)]
         public static extern void DwmSetWindowAttribute(IntPtr hwnd, DWMWINDOWATTRIBUTE dwAttribute, ref uint pvAttribute, uint cbAttribute);
 
@@ -421,7 +420,6 @@ namespace PlainTextEditor
 
         // <----- Addition: AssignCustomRenderer method ends ----->
 
-
         private void UpdateStatusCounts()
         {
             string text = textBoxMain.Text;
@@ -485,6 +483,9 @@ namespace PlainTextEditor
 
         private void editTextSize()
         {
+            // Changing the font of the textBoxMain
+            textBoxMain.Font = new Font("Consolas", 12);
+
             // Size submenu
             editToolStripMenuItem.DropDownItems.Add(sizeToolStripMenuItem);
 
