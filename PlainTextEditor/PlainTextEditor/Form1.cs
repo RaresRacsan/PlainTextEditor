@@ -1,7 +1,7 @@
 using System.Runtime.InteropServices;
 using System.IO;
-using System.Drawing; // <----- Addition: Required for CustomColorTable
-using System.Windows.Forms; // <----- Addition: Required for CustomColorTable
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace PlainTextEditor
 {
@@ -25,7 +25,7 @@ namespace PlainTextEditor
             editTextSize();
             UpdateTitle();
             SetDarkTheme();
-            AssignCustomRenderer(); // <----- Addition: Assign custom renderer after initializing components
+            AssignCustomRenderer();
             UpdateStatusCounts();
 
         }
@@ -583,6 +583,12 @@ namespace PlainTextEditor
                 {
                     SetDarkTheme();
                 }
+            }
+
+            // Exit Application
+            if(e.Control && e.KeyCode == Keys.W)
+            {
+                System.Environment.Exit(0);
             }
         }
     }
