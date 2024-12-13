@@ -62,7 +62,7 @@ To run the project, you'll need:
 
 ## Screenshots
 
-![image](![image](https://github.com/user-attachments/assets/8e865f01-d16e-4498-ba96-01398da8dbaa))
+![image](![image](https://github.com/user-attachments/assets/8e865f01-d16e-4498-ba96-01398da8dbaa)
 
 ![image](https://github.com/user-attachments/assets/2755ff9b-30b6-4355-92f9-04c8035d60af)
 
