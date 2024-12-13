@@ -8,7 +8,6 @@ TextEditor is a simple text editor built using C# and Windows Forms. It provides
 - **Save/Save As**: Save the current document to the same file or choose a new location.
 - **Light/Dark Theme**: Toggle between light and dark themes for the editor.
 - **Text Editing**: Basic text editing functionality with the ability to type, edit, and delete text.
-- **Modes**: Highlights words in c++ mode.
 
 ## Technologies Used
 
