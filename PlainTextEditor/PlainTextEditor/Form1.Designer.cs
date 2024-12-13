@@ -41,15 +41,18 @@
             darkThemeToolStripMenuItem = new ToolStripMenuItem();
             helpToolStripMenuItem = new ToolStripMenuItem();
             aToolStripMenuItem = new ToolStripMenuItem();
-            textBoxMain = new TextBox();
             shortcutsToolStripMenuItem = new ToolStripMenuItem();
+            modeToolStripMenuItem = new ToolStripMenuItem();
+            plainTextToolStripMenuItem = new ToolStripMenuItem();
+            cCToolStripMenuItem = new ToolStripMenuItem();
+            textBoxMain = new RichTextBox();
             menuStrip.SuspendLayout();
             SuspendLayout();
             // 
             // menuStrip
             // 
             menuStrip.ImageScalingSize = new Size(20, 20);
-            menuStrip.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, editToolStripMenuItem, helpToolStripMenuItem });
+            menuStrip.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, editToolStripMenuItem, modeToolStripMenuItem, helpToolStripMenuItem });
             menuStrip.Location = new Point(0, 0);
             menuStrip.Name = "menuStrip";
             menuStrip.Padding = new Padding(5, 2, 0, 2);
@@ -137,28 +140,46 @@
             // aToolStripMenuItem
             // 
             aToolStripMenuItem.Name = "aToolStripMenuItem";
-            aToolStripMenuItem.Size = new Size(180, 22);
+            aToolStripMenuItem.Size = new Size(124, 22);
             aToolStripMenuItem.Text = "About";
             aToolStripMenuItem.Click += aToolStripMenuItem_Click;
-            // 
-            // textBoxMain
-            // 
-            textBoxMain.Dock = DockStyle.Fill;
-            textBoxMain.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            textBoxMain.Location = new Point(0, 24);
-            textBoxMain.Margin = new Padding(3, 2, 3, 2);
-            textBoxMain.Multiline = true;
-            textBoxMain.Name = "textBoxMain";
-            textBoxMain.Size = new Size(700, 314);
-            textBoxMain.TabIndex = 1;
-            textBoxMain.TextChanged += textBoxMain_TextChanged;
             // 
             // shortcutsToolStripMenuItem
             // 
             shortcutsToolStripMenuItem.Name = "shortcutsToolStripMenuItem";
-            shortcutsToolStripMenuItem.Size = new Size(180, 22);
+            shortcutsToolStripMenuItem.Size = new Size(124, 22);
             shortcutsToolStripMenuItem.Text = "Shortcuts";
             shortcutsToolStripMenuItem.Click += shortcutsToolStripMenuItem_Click;
+            // 
+            // modeToolStripMenuItem
+            // 
+            modeToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { plainTextToolStripMenuItem, cCToolStripMenuItem });
+            modeToolStripMenuItem.Name = "modeToolStripMenuItem";
+            modeToolStripMenuItem.Size = new Size(50, 20);
+            modeToolStripMenuItem.Text = "Mode";
+            // 
+            // plainTextToolStripMenuItem
+            // 
+            plainTextToolStripMenuItem.Name = "plainTextToolStripMenuItem";
+            plainTextToolStripMenuItem.Size = new Size(180, 22);
+            plainTextToolStripMenuItem.Text = "PlainText";
+            plainTextToolStripMenuItem.Click += plainTextToolStripMenuItem_Click;
+            // 
+            // cCToolStripMenuItem
+            // 
+            cCToolStripMenuItem.Name = "cCToolStripMenuItem";
+            cCToolStripMenuItem.Size = new Size(180, 22);
+            cCToolStripMenuItem.Text = "C/C++";
+            cCToolStripMenuItem.Click += cCToolStripMenuItem_Click;
+            // 
+            // textBoxMain
+            // 
+            textBoxMain.Dock = DockStyle.Fill;
+            textBoxMain.Location = new Point(0, 24);
+            textBoxMain.Name = "textBoxMain";
+            textBoxMain.Size = new Size(700, 314);
+            textBoxMain.TabIndex = 1;
+            textBoxMain.Text = "";
             // 
             // PlainTextEditor
             // 
@@ -191,12 +212,15 @@
         private ToolStripMenuItem saveAsToolStripMenuItem;
         private ToolStripMenuItem exitToolStripMenuItem;
         private ToolStripMenuItem helpToolStripMenuItem;
-        private TextBox textBoxMain;
         private ToolStripMenuItem aToolStripMenuItem;
         private ToolStripMenuItem editToolStripMenuItem;
         private ToolStripMenuItem themeToolStripMenuItem;
         private ToolStripMenuItem lightThemeToolStripMenuItem;
         private ToolStripMenuItem darkThemeToolStripMenuItem;
         private ToolStripMenuItem shortcutsToolStripMenuItem;
+        private ToolStripMenuItem modeToolStripMenuItem;
+        private ToolStripMenuItem plainTextToolStripMenuItem;
+        private ToolStripMenuItem cCToolStripMenuItem;
+        private RichTextBox textBoxMain;
     }
 }

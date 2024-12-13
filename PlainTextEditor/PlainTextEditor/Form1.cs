@@ -14,10 +14,12 @@ namespace PlainTextEditor
         private ToolStripStatusLabel toolStripStatusLabelWordCount;
         private ToolStripStatusLabel toolStripStatusLabelCharCount;
         private string currentFilePath = null;
+        private bool isCppEditorMode = false;
         private string originalFileContent = string.Empty;
         private int words = 0;
         private int characters = 0;
         ToolStripMenuItem sizeToolStripMenuItem = new ToolStripMenuItem("Size");
+
 
         /// <summary>
         /// Starting the windows form application by initializing everything
@@ -134,6 +136,8 @@ namespace PlainTextEditor
             exitToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);
             openToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);
             shortcutsToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);
+            plainTextToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);
+            cCToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);
 
             // Set foreground color (text color) for white theme (light theme)
             editToolStripMenuItem.ForeColor = Color.Black;
@@ -144,9 +148,11 @@ namespace PlainTextEditor
             saveAsToolStripMenuItem.ForeColor = Color.Black;
             newToolStripMenuItem.ForeColor = Color.Black;
             saveToolStripMenuItem.ForeColor = Color.Black;
-            exitToolStripMenuItem.ForeColor = Color.Black;  
+            exitToolStripMenuItem.ForeColor = Color.Black;
             openToolStripMenuItem.ForeColor = Color.Black;
             shortcutsToolStripMenuItem.ForeColor = Color.Black;
+            plainTextToolStripMenuItem.ForeColor = Color.Black;
+            cCToolStripMenuItem.ForeColor = Color.Black;
 
             editToolStripMenuItem.BackColor = menuStrip.BackColor;
 
@@ -191,6 +197,9 @@ namespace PlainTextEditor
             exitToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
             openToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
             shortcutsToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
+            plainTextToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
+            cCToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
+
             editToolStripMenuItem.ForeColor = Color.White;
             aToolStripMenuItem.ForeColor = Color.White;
             themeToolStripMenuItem.ForeColor = Color.White;
@@ -202,6 +211,8 @@ namespace PlainTextEditor
             exitToolStripMenuItem.ForeColor = Color.White;
             openToolStripMenuItem.ForeColor = Color.White;
             shortcutsToolStripMenuItem.ForeColor = Color.White;
+            plainTextToolStripMenuItem.ForeColor = Color.White;
+            cCToolStripMenuItem.ForeColor = Color.White;
 
             AssignCustomRenderer(); // <----- Addition: Update renderer when theme changes
 
@@ -296,7 +307,7 @@ namespace PlainTextEditor
 
         private void aToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("A simple notepad created by Rares Racsan using C# and Windows Forms\nFor more details check @RaresRacsan on github.", "About");
+            MessageBox.Show("A simple notepad created by Rares Racsan using C# and Win.Forms\nFor more details check @RaresRacsan on github.", "About");
         }
 
         /// <summary>
@@ -552,6 +563,8 @@ namespace PlainTextEditor
         /// Ctrl + "-" - decrease font size,
         /// Ctrl + T - change theme dark/light,
         /// Ctrl + W - close application
+        /// Ctrl + ',' - change to plain text mode
+        /// Ctrl + '.' - change to c++ mode
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -668,6 +681,18 @@ namespace PlainTextEditor
                 }
                 System.Environment.Exit(0);
             }
+
+            // Change to cpp theme
+            if(e.Control && e.KeyCode == Keys.OemPeriod) 
+            {
+                SetCppEditorMode();
+            }
+
+            // Change to plain mode theme
+            if(e.Control && e.KeyCode == Keys.Oemcomma)
+            {
+                SetPlainTextMode();
+            }
         }
 
         /// <summary>
@@ -701,7 +726,115 @@ namespace PlainTextEditor
 
         private void shortcutsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Shortcuts:\n- CTRL + N - new file\n- CTRL + S - save file\n- CTRL + O - open file\n- CTRL + '+' - increase font size\n- CTRL + '-' - decrease font size\n- CTRL + W - close file\n- CTRL + T - change theme", "Shortcuts");
+            MessageBox.Show("Shortcuts:\n- CTRL + N - new file\n- CTRL + S - save file\n- CTRL + O - open file\n- CTRL + '+' - increase font size\n- CTRL + '-' - decrease font size\n- CTRL + W - close file\n- CTRL + T - change theme\n- CTRL + '.' - change to c++ mode\n- CTRL + ',' - change to plain text mode", "Shortcuts");
+        }
+
+        private void plainTextToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SetPlainTextMode();
+            UpdateTitle();
+        }
+
+        private void cCToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SetCppEditorMode();
+            UpdateTitle();
+        }
+
+        /// <summary>
+        /// Function to set special colors to words in order to help coding in C++
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void HighlightCppKeyWords(object sender, EventArgs e)
+        {
+            if (!isCppEditorMode) return; // Skip if not in C++ mode
+
+            string[] variableTypeKeyWords = { "int", "float", "double", "bool", "string", "char", "void" };
+            string[] controlFlowKeywords = { "if", "else", "switch", "case", "for", "while", "do", "break", "continue", "return" };
+            string[] accessModifiers = { "public", "private", "protected", "class", "struct" };
+            string[] cppStandardKeywords = { "std", "cout", "cin", "endl", "namespace", "using" };
+            string[] includeDirectives = { "#include" };
+
+            Dictionary<string[], Color> keywordCategories = new Dictionary<string[], Color>
+    {
+            { variableTypeKeyWords, Color.DeepSkyBlue },
+            { controlFlowKeywords, Color.Violet },
+            { accessModifiers, Color.Fuchsia },
+            { cppStandardKeywords, Color.DarkOrange },
+            { includeDirectives, Color.ForestGreen }
+    };
+
+            string text = textBoxMain.Text;
+
+            int selectionStart = textBoxMain.SelectionStart;
+            int selectionLength = textBoxMain.SelectionLength;
+
+            // Temporarily disable TextChanged event to avoid recursion
+            textBoxMain.TextChanged -= HighlightCppKeyWords;
+
+            // Reset all text color
+            textBoxMain.Select(0, text.Length);
+            textBoxMain.SelectionColor = textBoxMain.ForeColor;
+
+            foreach (var category in keywordCategories)
+            {
+                string[] keywords = category.Key;
+                Color color = category.Value;
+
+                foreach (string keyword in keywords)
+                {
+                    int startIndex = 0;
+                    while ((startIndex = text.IndexOf(keyword, startIndex)) != -1)
+                    {
+                        // Check if the keyword is standalone
+                        bool isWordBoundary = (startIndex == 0 || !char.IsLetterOrDigit(text[startIndex - 1])) &&
+                                              (startIndex + keyword.Length == text.Length || !char.IsLetterOrDigit(text[startIndex + keyword.Length]));
+                        if (isWordBoundary)
+                        {
+                            textBoxMain.Select(startIndex, keyword.Length);
+                            textBoxMain.SelectionColor = color;
+                        }
+                        startIndex += keyword.Length;
+                    }
+                }
+            }
+
+            // Restore cursor position
+            textBoxMain.SelectionStart = selectionStart;
+            textBoxMain.SelectionLength = selectionLength;
+            textBoxMain.SelectionColor = textBoxMain.ForeColor;
+
+            // Reattach TextChanged event
+            textBoxMain.TextChanged += HighlightCppKeyWords;
+        }
+
+        private void SetCppEditorMode()
+        {
+            isCppEditorMode = true;
+            textBoxMain.TextChanged += HighlightCppKeyWords;
+            HighlightCppKeyWords(null, null); // Trigger initial highlighting
+        }
+
+        private void SetPlainTextMode()
+        {
+            isCppEditorMode = false;
+            textBoxMain.TextChanged -= HighlightCppKeyWords; // Detach event handler
+            ResetTextBoxColors(); // Clear highlighting
+        }
+
+        private void ResetTextBoxColors()
+        {
+            int selectionStart = textBoxMain.SelectionStart;
+            int selectionLength = textBoxMain.SelectionLength;
+
+            // Reset all text to default color
+            textBoxMain.SelectAll();
+            textBoxMain.SelectionColor = textBoxMain.ForeColor;
+
+            // Restore cursor position
+            textBoxMain.SelectionStart = selectionStart;
+            textBoxMain.SelectionLength = selectionLength;
         }
     }
 }
