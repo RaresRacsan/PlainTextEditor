@@ -479,7 +479,7 @@ namespace PlainTextEditor
             editToolStripMenuItem.DropDownItems.Add(sizeToolStripMenuItem);
 
             // Add size options
-            string[] fontSizes = { "8", "12", "14", "18", "24" };
+            string[] fontSizes = { "8", "12", "16", "20", "24" };
             foreach (var size in fontSizes)
             {
                 ToolStripMenuItem sizeOption = new ToolStripMenuItem(size);
@@ -550,6 +550,25 @@ namespace PlainTextEditor
                     originalFileContent = File.ReadAllText(currentFilePath);
                     textBoxMain.Text = File.ReadAllText(currentFilePath);
                     UpdateTitle();
+                }
+            }
+
+            // Increase Font size
+            if(e.Control && e.KeyCode == Keys.Oemplus)
+            {
+                float currentSize = textBoxMain.Font.SizeInPoints;
+                float newSize = currentSize + 4;
+                ChangeFontSize((int)(newSize));
+            }
+
+            // Decrease Font Size
+            if(e.Control && e.KeyCode == Keys.OemMinus)
+            {
+                float currentSize = textBoxMain.Font.SizeInPoints;
+                if(currentSize > 8)
+                {
+                    float newSize = currentSize - 4;
+                    ChangeFontSize((int)( newSize));
                 }
             }
         }
