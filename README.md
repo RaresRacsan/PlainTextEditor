@@ -56,8 +56,9 @@ To run the project, you'll need:
 4. Save As: Click File -> Save As to save the current document to a different location or under a new name.
 5. Change Theme: Under the Edit menu, click Theme -> Light Theme or Dark Theme to toggle between the two themes.
 6. Text Editing: Use the text box to edit the text content. The text will be saved when you save the file.
-7. Switch Modes: - Plain Text Mode: Switch to Plain Text mode where no syntax highlighting is applied.
-                 - C++ Editor Mode: Switch to C++ mode, where syntax highlighting for C++ keywords, variable types, control flow statements, and #include directives is applied.
+7. Switch Modes:
+   - Plain Text Mode: Switch to Plain Text mode where no syntax highlighting is applied.
+   - C++ Editor Mode: Switch to C++ mode, where syntax highlighting for C++ keywords, variable types, control flow statements, and #include directives is applied.
 
 ## Screenshots
 
