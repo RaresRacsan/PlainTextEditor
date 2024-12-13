@@ -8,6 +8,18 @@ TextEditor is a simple text editor built using C# and Windows Forms. It provides
 - **Save/Save As**: Save the current document to the same file or choose a new location.
 - **Light/Dark Theme**: Toggle between light and dark themes for the editor.
 - **Text Editing**: Basic text editing functionality with the ability to type, edit, and delete text.
+- **Mode Switching (Plain Text / C++ Editor)**: Switch between Plain Text mode and C++ Editor mode. In C++ mode, syntax highlighting is applied to variable types, control flow keywords, and #include statements.
+- **Keyboard Shortcuts**: Use keyboard shortcuts for efficient navigation and file operations.
+
+## Keyboard Shortcuts
+- **Ctrl + N**: New File.
+- **Ctrl + O**: Open File.
+- **Ctrl + S**: Save File.
+- **Ctrl + T**: Change between themes,
+- **Ctrl + '+/-'**: Increase/Decrease size of font.
+- **Ctrl + W**: Close File.
+- **Ctrl + '.'**: Change to C++ mode.
+- **Ctrl + ','**: Change to Plain Text mode.
 
 ## Technologies Used
 
@@ -44,6 +56,8 @@ To run the project, you'll need:
 4. Save As: Click File -> Save As to save the current document to a different location or under a new name.
 5. Change Theme: Under the Edit menu, click Theme -> Light Theme or Dark Theme to toggle between the two themes.
 6. Text Editing: Use the text box to edit the text content. The text will be saved when you save the file.
+7. Switch Modes: - Plain Text Mode: Switch to Plain Text mode where no syntax highlighting is applied.
+                 - C++ Editor Mode: Switch to C++ mode, where syntax highlighting for C++ keywords, variable types, control flow statements, and #include directives is applied.
 
 ## Screenshots
 
