@@ -290,9 +290,6 @@ namespace PlainTextEditor
             SetDarkTheme();
         }
 
-        // <----- Addition: CustomColorTable class starts ----->
-
-        // CustomColorTable class to define custom colors for the MenuStrip and remove borders
         public class CustomColorTable : ProfessionalColorTable
         {
             private bool isDarkTheme;
@@ -401,24 +398,16 @@ namespace PlainTextEditor
             }
         }
 
-        // <----- Addition: CustomColorTable class ends ----->
-
-        // <----- Addition: AssignCustomRenderer method starts ----->
-
-        // Method to assign the custom renderer to the MenuStrip
         private void AssignCustomRenderer()
         {
             menuStrip.Renderer = new ToolStripProfessionalRenderer(new CustomColorTable(IsDarkTheme()));
         }
 
-        // Helper method to determine the current theme
         private bool IsDarkTheme()
         {
 
             return menuStrip.BackColor == Color.FromArgb(40, 40, 40);
         }
-
-        // <----- Addition: AssignCustomRenderer method ends ----->
 
         private void UpdateStatusCounts()
         {
@@ -506,7 +495,8 @@ namespace PlainTextEditor
 
         private void PlainTextEditor_KeyDown(object sender, KeyEventArgs e)
         {
-            // Save Current File Shortcut
+            // Shortcut implementations
+            // Save Current File
             if(e.Control && e.KeyCode == Keys.S) 
             {
                 if (string.IsNullOrEmpty(currentFilePath))
@@ -519,7 +509,7 @@ namespace PlainTextEditor
                 }
             }
 
-            // Create New File Shortcut
+            // Create New File
             if(e.Control && e.KeyCode == Keys.N)
             {
                 if (!string.IsNullOrEmpty(textBoxMain.Text) && textBoxMain.Text != originalFileContent)
@@ -546,6 +536,21 @@ namespace PlainTextEditor
                 currentFilePath = null;
                 originalFileContent = string.Empty;
                 UpdateTitle();
+            }
+
+            // Open An Existing File
+            if(e.Control && e.KeyCode == Keys.O)
+            {
+                OpenFileDialog openFileDialog = new OpenFileDialog();
+                openFileDialog.Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*";
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    currentFilePath = openFileDialog.FileName;
+                    originalFileContent = File.ReadAllText(currentFilePath);
+                    textBoxMain.Text = File.ReadAllText(currentFilePath);
+                    UpdateTitle();
+                }
             }
         }
     }
