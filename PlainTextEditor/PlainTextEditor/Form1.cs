@@ -588,6 +588,22 @@ namespace PlainTextEditor
             // Exit Application
             if (e.Control && e.KeyCode == Keys.W)
             {
+                if (!string.IsNullOrEmpty(textBoxMain.Text) && textBoxMain.Text != originalFileContent)
+                {
+                    var result = MessageBox.Show("Do you want to save changes?", "Unsaved Changes", MessageBoxButtons.YesNo);
+
+                    if (result == DialogResult.Yes)
+                    {
+                        if (string.IsNullOrEmpty(currentFilePath))
+                        {
+                            SaveAs();
+                        }
+                        else
+                        {
+                            SaveFile();
+                        }
+                    }
+                }
                 System.Environment.Exit(0);
             }
         }
@@ -608,6 +624,10 @@ namespace PlainTextEditor
                     {
                         SaveFile();
                     }
+                }
+                else if(result == DialogResult.Cancel)
+                {
+                    e.Cancel = true;
                 }
             }
         }
