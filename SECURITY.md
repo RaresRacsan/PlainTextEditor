@@ -41,10 +41,10 @@ We regularly release security patches for supported versions. If you are using a
 ## Scope
 
 This policy applies to:
-- **PlainTextEditor** application and its components
-- **PlainTextEditor** repository and associated tools
+- **TextEditor** application and its components
+- **TextEditor** repository and associated tools
 - Issues related to data security, privacy, and system integrity
 
 ## Thank You!
 
-We appreciate your help in keeping **PlainTextEditor** safe and secure. Responsible disclosure of vulnerabilities helps ensure that we can protect our users and prevent potential damage from malicious exploitation.
+We appreciate your help in keeping **TextEditor** safe and secure. Responsible disclosure of vulnerabilities helps ensure that we can protect our users and prevent potential damage from malicious exploitation.

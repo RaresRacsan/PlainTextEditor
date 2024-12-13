@@ -1,6 +1,6 @@
-# Contributing to PlainTextEditor
+# Contributing to TextEditor
 
-First off, thank you for considering contributing to **PlainTextEditor**! 🎉
+First off, thank you for considering contributing to **TextEditor**! 🎉
 
 We welcome contributions from the community. Whether you're fixing a bug, adding a new feature, or improving the documentation, your help is greatly appreciated.
 
@@ -15,8 +15,8 @@ Please take a moment to review the following guidelines to ensure a smooth contr
 ### 2. **Clone Your Fork**
    - Clone the forked repository to your local machine:
      ```bash
-     git clone https://github.com/RaresRacsan/PlainTextEditor.git
-     cd PlainTextEditor
+     git clone https://github.com/RaresRacsan/TextEditor.git
+     cd TextEditor
      ```
 
 ### 3. **Create a Branch**
@@ -84,4 +84,4 @@ By contributing, you agree that your contributions will be licensed under the [M
 
 ---
 
-Thank you for contributing to **PlainTextEditor**! Your contributions help make the project better for everyone. 🚀
+Thank you for contributing to **TextEditor**! Your contributions help make the project better for everyone. 🚀
