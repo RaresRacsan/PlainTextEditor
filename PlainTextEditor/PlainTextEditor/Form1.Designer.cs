@@ -42,6 +42,7 @@
             helpToolStripMenuItem = new ToolStripMenuItem();
             aToolStripMenuItem = new ToolStripMenuItem();
             textBoxMain = new TextBox();
+            shortcutsToolStripMenuItem = new ToolStripMenuItem();
             menuStrip.SuspendLayout();
             SuspendLayout();
             // 
@@ -128,7 +129,7 @@
             // 
             // helpToolStripMenuItem
             // 
-            helpToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { aToolStripMenuItem });
+            helpToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { aToolStripMenuItem, shortcutsToolStripMenuItem });
             helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             helpToolStripMenuItem.Size = new Size(44, 20);
             helpToolStripMenuItem.Text = "Help";
@@ -136,7 +137,7 @@
             // aToolStripMenuItem
             // 
             aToolStripMenuItem.Name = "aToolStripMenuItem";
-            aToolStripMenuItem.Size = new Size(107, 22);
+            aToolStripMenuItem.Size = new Size(180, 22);
             aToolStripMenuItem.Text = "About";
             aToolStripMenuItem.Click += aToolStripMenuItem_Click;
             // 
@@ -151,6 +152,13 @@
             textBoxMain.Size = new Size(700, 314);
             textBoxMain.TabIndex = 1;
             textBoxMain.TextChanged += textBoxMain_TextChanged;
+            // 
+            // shortcutsToolStripMenuItem
+            // 
+            shortcutsToolStripMenuItem.Name = "shortcutsToolStripMenuItem";
+            shortcutsToolStripMenuItem.Size = new Size(180, 22);
+            shortcutsToolStripMenuItem.Text = "Shortcuts";
+            shortcutsToolStripMenuItem.Click += shortcutsToolStripMenuItem_Click;
             // 
             // PlainTextEditor
             // 
@@ -189,5 +197,6 @@
         private ToolStripMenuItem themeToolStripMenuItem;
         private ToolStripMenuItem lightThemeToolStripMenuItem;
         private ToolStripMenuItem darkThemeToolStripMenuItem;
+        private ToolStripMenuItem shortcutsToolStripMenuItem;
     }
 }

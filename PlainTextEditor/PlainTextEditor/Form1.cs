@@ -124,35 +124,33 @@ namespace PlainTextEditor
             }
 
             // Set background color for white theme (light theme)
-            // Commented out the explicit white background to maintain consistency
-            // editToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);  // White background
-            aToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);  // White background
-            themeToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);  // White background
-            lightThemeToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);  // White background
-            darkThemeToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);  // White background
-            saveAsToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);  // White background
-            newToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);  // White background
-            saveToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);  // White background
-            exitToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);  // White background
-            openToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);  // White background
+            aToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);
+            themeToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);
+            lightThemeToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);
+            darkThemeToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);
+            saveAsToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);
+            newToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);
+            saveToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);
+            exitToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);
+            openToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);
+            shortcutsToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);
 
             // Set foreground color (text color) for white theme (light theme)
-            editToolStripMenuItem.ForeColor = Color.Black;  // Black text
-            aToolStripMenuItem.ForeColor = Color.Black;  // Black text
-            themeToolStripMenuItem.ForeColor = Color.Black;  // Black text
-            lightThemeToolStripMenuItem.ForeColor = Color.Black;  // Black text
-            darkThemeToolStripMenuItem.ForeColor = Color.Black;  // Black text
-            saveAsToolStripMenuItem.ForeColor = Color.Black;  // Black text
-            newToolStripMenuItem.ForeColor = Color.Black;  // Black text
-            saveToolStripMenuItem.ForeColor = Color.Black;  // Black text
-            exitToolStripMenuItem.ForeColor = Color.Black;  // Black text
-            openToolStripMenuItem.ForeColor = Color.Black;  // Black text
+            editToolStripMenuItem.ForeColor = Color.Black;
+            aToolStripMenuItem.ForeColor = Color.Black;
+            themeToolStripMenuItem.ForeColor = Color.Black;
+            lightThemeToolStripMenuItem.ForeColor = Color.Black;
+            darkThemeToolStripMenuItem.ForeColor = Color.Black;
+            saveAsToolStripMenuItem.ForeColor = Color.Black;
+            newToolStripMenuItem.ForeColor = Color.Black;
+            saveToolStripMenuItem.ForeColor = Color.Black;
+            exitToolStripMenuItem.ForeColor = Color.Black;  
+            openToolStripMenuItem.ForeColor = Color.Black;
+            shortcutsToolStripMenuItem.ForeColor = Color.Black;
 
-            // <----- Addition: Ensure Edit button matches the MenuStrip background in light mode ----->
-            editToolStripMenuItem.BackColor = menuStrip.BackColor;  // Set to LightGray to match MenuStrip
-                                                                    // <----- Addition ends ----->
+            editToolStripMenuItem.BackColor = menuStrip.BackColor;
 
-            AssignCustomRenderer(); // <----- Addition: Update renderer when theme changes
+            AssignCustomRenderer();
 
             statusStrip.BackColor = Color.LightGray;
             statusStrip.ForeColor = Color.Black;
@@ -192,6 +190,7 @@ namespace PlainTextEditor
             saveToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
             exitToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
             openToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
+            shortcutsToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
             editToolStripMenuItem.ForeColor = Color.White;
             aToolStripMenuItem.ForeColor = Color.White;
             themeToolStripMenuItem.ForeColor = Color.White;
@@ -202,6 +201,7 @@ namespace PlainTextEditor
             saveToolStripMenuItem.ForeColor = Color.White;
             exitToolStripMenuItem.ForeColor = Color.White;
             openToolStripMenuItem.ForeColor = Color.White;
+            shortcutsToolStripMenuItem.ForeColor = Color.White;
 
             AssignCustomRenderer(); // <----- Addition: Update renderer when theme changes
 
@@ -692,11 +692,16 @@ namespace PlainTextEditor
                         SaveFile();
                     }
                 }
-                else if(result == DialogResult.Cancel)
+                else if (result == DialogResult.Cancel)
                 {
                     e.Cancel = true;
                 }
             }
+        }
+
+        private void shortcutsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Shortcuts:\n- CTRL + N - new file\n- CTRL + S - save file\n- CTRL + O - open file\n- CTRL + '+' - increase font size\n- CTRL + '-' - decrease font size\n- CTRL + W - close file\n- CTRL + T - change theme", "Shortcuts");
         }
     }
 }
