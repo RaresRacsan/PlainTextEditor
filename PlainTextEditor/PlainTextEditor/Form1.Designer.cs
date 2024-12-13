@@ -160,10 +160,12 @@
             ClientSize = new Size(700, 338);
             Controls.Add(textBoxMain);
             Controls.Add(menuStrip);
+            KeyPreview = true;
             MainMenuStrip = menuStrip;
             Margin = new Padding(3, 2, 3, 2);
             Name = "PlainTextEditor";
             Text = "PlainTextEditor";
+            KeyDown += PlainTextEditor_KeyDown;
             menuStrip.ResumeLayout(false);
             menuStrip.PerformLayout();
             ResumeLayout(false);

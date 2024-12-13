@@ -503,5 +503,21 @@ namespace PlainTextEditor
             customSizeOption.Click += CustomFontSize_Click;
             sizeToolStripMenuItem.DropDownItems.Add(customSizeOption);
         }
+
+        private void PlainTextEditor_KeyDown(object sender, KeyEventArgs e)
+        {
+            // Save Current File Shortcut
+            if(e.Control && e.KeyCode == Keys.S) 
+            {
+                if (string.IsNullOrEmpty(currentFilePath))
+                {
+                    SaveAs();
+                }
+                else if (textBoxMain.Text != originalFileContent)
+                {
+                    SaveFile();
+                }
+            }
+        }
     }
 }
