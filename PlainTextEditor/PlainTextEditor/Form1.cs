@@ -7,6 +7,9 @@ namespace PlainTextEditor
 {
     public partial class PlainTextEditor : Form
     {
+        /// <summary>
+        /// Initialization of variables and items
+        /// </summary>
         private StatusStrip statusStrip;
         private ToolStripStatusLabel toolStripStatusLabelWordCount;
         private ToolStripStatusLabel toolStripStatusLabelCharCount;
@@ -14,10 +17,11 @@ namespace PlainTextEditor
         private string originalFileContent = string.Empty;
         private int words = 0;
         private int characters = 0;
-
         ToolStripMenuItem sizeToolStripMenuItem = new ToolStripMenuItem("Size");
 
-
+        /// <summary>
+        /// Starting the windows form application by initializing everything
+        /// </summary>
         public PlainTextEditor()
         {
             InitializeComponent();
@@ -68,6 +72,10 @@ namespace PlainTextEditor
             DwmSetWindowAttribute(this.Handle, DWMWINDOWATTRIBUTE.DWMWA_USE_IMMERSIVE_DARK_MODE, ref value, (uint)Marshal.SizeOf(value));
         }
 
+        /// <summary>
+        /// Function that updates the title of the form, in order to contain the name of the file that 
+        /// is currently open
+        /// </summary>
         private void UpdateTitle()
         {
             string fileName = string.IsNullOrEmpty(currentFilePath) ? "New File" : Path.GetFileName(currentFilePath);
@@ -203,6 +211,12 @@ namespace PlainTextEditor
             toolStripStatusLabelCharCount.ForeColor = Color.White;
         }
 
+        /// <summary>
+        /// Function for the strip menu item called "New", 
+        /// it is creating a new empty file
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(textBoxMain.Text) && textBoxMain.Text != originalFileContent)
@@ -231,6 +245,11 @@ namespace PlainTextEditor
             UpdateTitle();
         }
 
+        /// <summary>
+        /// Function for the "Open" strip menu item, to open an already created file
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -245,6 +264,11 @@ namespace PlainTextEditor
             }
         }
 
+        /// <summary>
+        /// Function for the "Save" strip menu item, to save the currently opened file
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(currentFilePath))
@@ -275,21 +299,39 @@ namespace PlainTextEditor
             MessageBox.Show("A simple notepad created by Rares Racsan using C# and Windows Forms\nFor more details check @RaresRacsan on github.", "About");
         }
 
+        /// <summary>
+        /// Function for the "Save As" strip menu item, to save the currently opened file as a .txt of .* (all files)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveAs();
         }
 
+        /// <summary>
+        /// Function for changing the theme to light in case the "Light" strip menu item is clicked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void lightThemeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SetLightTheme();
         }
 
+        /// <summary>
+        /// Function for changing the theme to dark in case the "Dark" strip menu item is clicked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void darkThemeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SetDarkTheme();
         }
 
+        /// <summary>
+        /// Color table for strip menu items
+        /// </summary>
         public class CustomColorTable : ProfessionalColorTable
         {
             private bool isDarkTheme;
@@ -403,12 +445,20 @@ namespace PlainTextEditor
             menuStrip.Renderer = new ToolStripProfessionalRenderer(new CustomColorTable(IsDarkTheme()));
         }
 
+        /// <summary>
+        /// Helper function that checks wether the current theme is dark theme
+        /// </summary>
+        /// <returns></returns>
         private bool IsDarkTheme()
         {
 
             return menuStrip.BackColor == Color.FromArgb(40, 40, 40);
         }
 
+        /// <summary>
+        /// Function that updates the words count and the characters count (the number of words and characters
+        /// that are currently in the textMainBox text)
+        /// </summary>
         private void UpdateStatusCounts()
         {
             string text = textBoxMain.Text;
@@ -493,6 +543,18 @@ namespace PlainTextEditor
             sizeToolStripMenuItem.DropDownItems.Add(customSizeOption);
         }
 
+        /// <summary>
+        /// Function for application shortcuts:
+        /// Ctrl + S - save file,
+        /// Ctrl + N - new file,
+        /// Ctrl + O - open file,
+        /// Ctrl + "+" - increase font size,
+        /// Ctrl + "-" - decrease font size,
+        /// Ctrl + T - change theme dark/light,
+        /// Ctrl + W - close application
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PlainTextEditor_KeyDown(object sender, KeyEventArgs e)
         {
             // Shortcut implementations
@@ -608,6 +670,11 @@ namespace PlainTextEditor
             }
         }
 
+        /// <summary>
+        /// Function that makes sure that the user is saving the progress before closing
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PlainTextEditor_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (!string.IsNullOrEmpty(textBoxMain.Text) && textBoxMain.Text != originalFileContent)
