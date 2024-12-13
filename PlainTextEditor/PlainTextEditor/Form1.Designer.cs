@@ -39,12 +39,12 @@
             themeToolStripMenuItem = new ToolStripMenuItem();
             lightThemeToolStripMenuItem = new ToolStripMenuItem();
             darkThemeToolStripMenuItem = new ToolStripMenuItem();
-            helpToolStripMenuItem = new ToolStripMenuItem();
-            aToolStripMenuItem = new ToolStripMenuItem();
-            shortcutsToolStripMenuItem = new ToolStripMenuItem();
             modeToolStripMenuItem = new ToolStripMenuItem();
             plainTextToolStripMenuItem = new ToolStripMenuItem();
             cCToolStripMenuItem = new ToolStripMenuItem();
+            helpToolStripMenuItem = new ToolStripMenuItem();
+            aToolStripMenuItem = new ToolStripMenuItem();
+            shortcutsToolStripMenuItem = new ToolStripMenuItem();
             textBoxMain = new RichTextBox();
             menuStrip.SuspendLayout();
             SuspendLayout();
@@ -130,6 +130,27 @@
             darkThemeToolStripMenuItem.Text = "Dark Theme";
             darkThemeToolStripMenuItem.Click += darkThemeToolStripMenuItem_Click;
             // 
+            // modeToolStripMenuItem
+            // 
+            modeToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { plainTextToolStripMenuItem, cCToolStripMenuItem });
+            modeToolStripMenuItem.Name = "modeToolStripMenuItem";
+            modeToolStripMenuItem.Size = new Size(50, 20);
+            modeToolStripMenuItem.Text = "Mode";
+            // 
+            // plainTextToolStripMenuItem
+            // 
+            plainTextToolStripMenuItem.Name = "plainTextToolStripMenuItem";
+            plainTextToolStripMenuItem.Size = new Size(121, 22);
+            plainTextToolStripMenuItem.Text = "PlainText";
+            plainTextToolStripMenuItem.Click += plainTextToolStripMenuItem_Click;
+            // 
+            // cCToolStripMenuItem
+            // 
+            cCToolStripMenuItem.Name = "cCToolStripMenuItem";
+            cCToolStripMenuItem.Size = new Size(121, 22);
+            cCToolStripMenuItem.Text = "C/C++";
+            cCToolStripMenuItem.Click += cCToolStripMenuItem_Click;
+            // 
             // helpToolStripMenuItem
             // 
             helpToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { aToolStripMenuItem, shortcutsToolStripMenuItem });
@@ -151,27 +172,6 @@
             shortcutsToolStripMenuItem.Text = "Shortcuts";
             shortcutsToolStripMenuItem.Click += shortcutsToolStripMenuItem_Click;
             // 
-            // modeToolStripMenuItem
-            // 
-            modeToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { plainTextToolStripMenuItem, cCToolStripMenuItem });
-            modeToolStripMenuItem.Name = "modeToolStripMenuItem";
-            modeToolStripMenuItem.Size = new Size(50, 20);
-            modeToolStripMenuItem.Text = "Mode";
-            // 
-            // plainTextToolStripMenuItem
-            // 
-            plainTextToolStripMenuItem.Name = "plainTextToolStripMenuItem";
-            plainTextToolStripMenuItem.Size = new Size(180, 22);
-            plainTextToolStripMenuItem.Text = "PlainText";
-            plainTextToolStripMenuItem.Click += plainTextToolStripMenuItem_Click;
-            // 
-            // cCToolStripMenuItem
-            // 
-            cCToolStripMenuItem.Name = "cCToolStripMenuItem";
-            cCToolStripMenuItem.Size = new Size(180, 22);
-            cCToolStripMenuItem.Text = "C/C++";
-            cCToolStripMenuItem.Click += cCToolStripMenuItem_Click;
-            // 
             // textBoxMain
             // 
             textBoxMain.Dock = DockStyle.Fill;
@@ -180,6 +180,7 @@
             textBoxMain.Size = new Size(700, 314);
             textBoxMain.TabIndex = 1;
             textBoxMain.Text = "";
+            textBoxMain.TextChanged += textBoxMain_TextChanged;
             // 
             // PlainTextEditor
             // 

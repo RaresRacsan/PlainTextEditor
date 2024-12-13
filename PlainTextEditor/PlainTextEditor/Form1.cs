@@ -683,13 +683,13 @@ namespace PlainTextEditor
             }
 
             // Change to cpp theme
-            if(e.Control && e.KeyCode == Keys.OemPeriod) 
+            if (e.Control && e.KeyCode == Keys.OemPeriod)
             {
                 SetCppEditorMode();
             }
 
             // Change to plain mode theme
-            if(e.Control && e.KeyCode == Keys.Oemcomma)
+            if (e.Control && e.KeyCode == Keys.Oemcomma)
             {
                 SetPlainTextMode();
             }
