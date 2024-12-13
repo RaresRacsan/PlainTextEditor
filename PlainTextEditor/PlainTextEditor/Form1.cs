@@ -518,6 +518,35 @@ namespace PlainTextEditor
                     SaveFile();
                 }
             }
+
+            // Create New File Shortcut
+            if(e.Control && e.KeyCode == Keys.N)
+            {
+                if (!string.IsNullOrEmpty(textBoxMain.Text) && textBoxMain.Text != originalFileContent)
+                {
+                    var result = MessageBox.Show("Do you want to save changes?", "Unsaved Changes", MessageBoxButtons.YesNoCancel);
+
+                    if (result == DialogResult.Yes)
+                    {
+                        if (string.IsNullOrEmpty(currentFilePath))
+                        {
+                            SaveAs();
+                        }
+                        else
+                        {
+                            SaveFile();
+                        }
+                    }
+                    else if (result == DialogResult.Cancel)
+                    {
+                        return;
+                    }
+                }
+                textBoxMain.Clear();
+                currentFilePath = null;
+                originalFileContent = string.Empty;
+                UpdateTitle();
+            }
         }
     }
 }
