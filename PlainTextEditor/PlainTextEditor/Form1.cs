@@ -571,6 +571,19 @@ namespace PlainTextEditor
                     ChangeFontSize((int)( newSize));
                 }
             }
+
+            // Change Themes
+            if(e.Control && e.KeyCode == Keys.T)
+            {
+                if(IsDarkTheme())
+                {
+                    SetLightTheme();
+                }
+                else
+                {
+                    SetDarkTheme();
+                }
+            }
         }
     }
 }
