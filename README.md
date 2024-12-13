@@ -64,7 +64,8 @@ To run the project, you'll need:
 
 ![image](https://github.com/user-attachments/assets/cac381af-463e-4579-9912-6d8ef4faa632)
 
-![image](https://github.com/user-attachments/assets/2755ff9b-30b6-4355-92f9-04c8035d60af)
+![image](https://github.com/user-attachments/assets/31fc89a9-3702-46b0-830a-a5c260975034)
+
 
 ## File Operations
 
