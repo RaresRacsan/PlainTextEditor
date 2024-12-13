@@ -165,6 +165,7 @@
             Margin = new Padding(3, 2, 3, 2);
             Name = "PlainTextEditor";
             Text = "PlainTextEditor";
+            FormClosing += PlainTextEditor_FormClosing;
             KeyDown += PlainTextEditor_KeyDown;
             menuStrip.ResumeLayout(false);
             menuStrip.PerformLayout();

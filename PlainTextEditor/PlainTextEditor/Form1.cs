@@ -497,7 +497,7 @@ namespace PlainTextEditor
         {
             // Shortcut implementations
             // Save Current File
-            if(e.Control && e.KeyCode == Keys.S) 
+            if (e.Control && e.KeyCode == Keys.S)
             {
                 if (string.IsNullOrEmpty(currentFilePath))
                 {
@@ -510,7 +510,7 @@ namespace PlainTextEditor
             }
 
             // Create New File
-            if(e.Control && e.KeyCode == Keys.N)
+            if (e.Control && e.KeyCode == Keys.N)
             {
                 if (!string.IsNullOrEmpty(textBoxMain.Text) && textBoxMain.Text != originalFileContent)
                 {
@@ -539,7 +539,7 @@ namespace PlainTextEditor
             }
 
             // Open An Existing File
-            if(e.Control && e.KeyCode == Keys.O)
+            if (e.Control && e.KeyCode == Keys.O)
             {
                 OpenFileDialog openFileDialog = new OpenFileDialog();
                 openFileDialog.Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*";
@@ -554,7 +554,7 @@ namespace PlainTextEditor
             }
 
             // Increase Font size
-            if(e.Control && e.KeyCode == Keys.Oemplus)
+            if (e.Control && e.KeyCode == Keys.Oemplus)
             {
                 float currentSize = textBoxMain.Font.SizeInPoints;
                 float newSize = currentSize + 4;
@@ -562,20 +562,20 @@ namespace PlainTextEditor
             }
 
             // Decrease Font Size
-            if(e.Control && e.KeyCode == Keys.OemMinus)
+            if (e.Control && e.KeyCode == Keys.OemMinus)
             {
                 float currentSize = textBoxMain.Font.SizeInPoints;
-                if(currentSize > 8)
+                if (currentSize > 8)
                 {
                     float newSize = currentSize - 4;
-                    ChangeFontSize((int)( newSize));
+                    ChangeFontSize((int)(newSize));
                 }
             }
 
             // Change Themes
-            if(e.Control && e.KeyCode == Keys.T)
+            if (e.Control && e.KeyCode == Keys.T)
             {
-                if(IsDarkTheme())
+                if (IsDarkTheme())
                 {
                     SetLightTheme();
                 }
@@ -586,9 +586,29 @@ namespace PlainTextEditor
             }
 
             // Exit Application
-            if(e.Control && e.KeyCode == Keys.W)
+            if (e.Control && e.KeyCode == Keys.W)
             {
                 System.Environment.Exit(0);
+            }
+        }
+
+        private void PlainTextEditor_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(textBoxMain.Text) && textBoxMain.Text != originalFileContent)
+            {
+                var result = MessageBox.Show("Do you want to save changes?", "Unsaved Changes", MessageBoxButtons.YesNoCancel);
+
+                if (result == DialogResult.Yes)
+                {
+                    if (string.IsNullOrEmpty(currentFilePath))
+                    {
+                        SaveAs();
+                    }
+                    else
+                    {
+                        SaveFile();
+                    }
+                }
             }
         }
     }
