@@ -39,10 +39,10 @@ To run the project, you'll need:
 
    ```bash
    git clone https://github.com/RaresRacsan/TextEditor.git
-   cd TextEditor
+   cd PlainTextEditor
    ```
 
-2. Open the solution file TextEditor.sln in Visual Studio.
+2. Open the solution file PlainTextEditor.sln in Visual Studio.
 
 3. Ensure you have the required dependencies and libraries installed (Visual Studio should manage these automatically).
 
