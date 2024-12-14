@@ -11,6 +11,7 @@ PlainTextEditor is a simple text editor built using C# and Windows Forms. It pro
 - **Text Editing**: Basic text editing functionality with the ability to type, edit, and delete text.
 - **Mode Switching (Plain Text / C++ Editor)**: Switch between Plain Text mode and C++ Editor mode. In C++ mode, syntax highlighting is applied to variable types, control flow keywords, and #include statements.
 - **Keyboard Shortcuts**: Use keyboard shortcuts for efficient navigation and file operations.
+- **Bracket Matching**: Automatically closes the bracket.
 
 ## Keyboard Shortcuts
 - **Ctrl + N**: New File.
