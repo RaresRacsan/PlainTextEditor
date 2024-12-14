@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Drawing.Printing;
 using System.Linq;
 using System.Text;
+using System.Collections.Generic;
 
 namespace PlainTextEditor
 {
@@ -28,6 +29,97 @@ namespace PlainTextEditor
         private PrintDocument printDocument = new PrintDocument();
         private string printText = string.Empty;
         private PrintPreviewDialog printPreviewDialog = new PrintPreviewDialog();
+        private Panel panelLineNumbers;
+
+
+
+        // Import user32.dll to get scroll position if needed
+        [DllImport("user32.dll")]
+        private static extern int GetScrollPos(IntPtr hWnd, int nBar);
+
+        private const int SB_VERT = 1;
+
+        /// <summary>
+        /// Gets the first visible line index in the RichTextBox.
+        /// </summary>
+        private int GetFirstVisibleLine(RichTextBox rtb)
+        {
+        int firstCharIndex = rtb.GetCharIndexFromPosition(new Point(0, 0));
+        int firstLine = rtb.GetLineFromCharIndex(firstCharIndex);
+        return firstLine;
+        }
+
+        /// <summary>
+        /// Paint event handler for the line numbers panel.
+        /// </summary>
+        private void panelLineNumbers_Paint(object sender, PaintEventArgs e)
+        {
+        // Determine the first visible line
+        int firstVisibleLine = GetFirstVisibleLine(textBoxMain);
+
+        // Determine the total number of lines
+        int totalLines = textBoxMain.GetLineFromCharIndex(textBoxMain.TextLength) + 1;
+
+
+        using (Font lineNumberFont = new Font(textBoxMain.Font.FontFamily, 6))
+        {
+
+                float textLineHeight = textBoxMain.Font.GetHeight(e.Graphics);
+
+                float lineNumberLineHeight = lineNumberFont.GetHeight(e.Graphics);
+
+
+                float verticalOffset = (textLineHeight - lineNumberLineHeight) / 2;
+
+
+                int visibleLines = (int)(panelLineNumbers.Height / textLineHeight);
+
+
+                Brush brush = new SolidBrush(panelLineNumbers.ForeColor);
+
+                for (int i = 0; i < visibleLines; i++)
+                {
+                int lineNumber = firstVisibleLine + i + 1;
+                if (lineNumber > totalLines)
+                        break;
+
+
+                float yPosition = i * textLineHeight - (textBoxMain.GetPositionFromCharIndex(textBoxMain.GetFirstCharIndexFromLine(firstVisibleLine)).Y % textLineHeight) + verticalOffset;
+
+
+                string lineNumberText = lineNumber.ToString();
+                SizeF textSize = e.Graphics.MeasureString(lineNumberText, lineNumberFont);
+                e.Graphics.DrawString(lineNumberText, lineNumberFont, brush, panelLineNumbers.Width - textSize.Width - 5, yPosition);
+                }
+        }
+        }
+
+
+        /// <summary>
+        /// Event handler for vertical scrolling of the RichTextBox.
+        /// </summary>
+        private void TextBoxMain_VScroll(object sender, EventArgs e)
+        {
+        panelLineNumbers.Invalidate();
+        }
+
+        /// <summary>
+        /// Event handler for text changes in the RichTextBox to update line numbers.
+        /// </summary>
+        private void TextBoxMain_TextChanged_ForLineNumbers(object sender, EventArgs e)
+        {
+        panelLineNumbers.Invalidate();
+        UpdateStatusCounts(); // Ensure status counts are updated
+        }
+
+        /// <summary>
+        /// Event handler for resizing of the RichTextBox.
+        /// </summary>
+        private void TextBoxMain_Resize(object sender, EventArgs e)
+        {
+        panelLineNumbers.Invalidate();
+        }
+
 
         /// <summary>
         /// Starting the windows form application by initializing everything
@@ -42,6 +134,9 @@ namespace PlainTextEditor
             AssignCustomRenderer();
             UpdateStatusCounts();
             printDocument.PrintPage += PrintDocument_PrintPage;
+            textBoxMain.VScroll += TextBoxMain_VScroll;
+            textBoxMain.TextChanged += TextBoxMain_TextChanged_ForLineNumbers;
+            textBoxMain.Resize += TextBoxMain_Resize;
         }
 
         private void InitializeStatusStrip()
@@ -165,130 +260,145 @@ namespace PlainTextEditor
 
         private void SetLightTheme()
         {
-            SetTitleBarColor();
+        SetTitleBarColor();
 
-            defaultTextColor = Color.Black;
+        defaultTextColor = Color.Black;
 
-            this.BackColor = Color.White;
-            this.ForeColor = Color.Black;
-            textBoxMain.BackColor = Color.White;
-            textBoxMain.ForeColor = Color.Black;
-            textBoxMain.BorderStyle = BorderStyle.None;
+        this.BackColor = Color.White;
+        this.ForeColor = Color.Black;
+        textBoxMain.BackColor = Color.White;
+        textBoxMain.ForeColor = Color.Black;
+        textBoxMain.BorderStyle = BorderStyle.None;
 
-            menuStrip.BackColor = Color.LightGray;
-            menuStrip.ForeColor = Color.Black;
+        menuStrip.BackColor = Color.LightGray;
+        menuStrip.ForeColor = Color.Black;
 
-            sizeToolStripMenuItem.BackColor = Color.White;
-            sizeToolStripMenuItem.ForeColor = menuStrip.ForeColor;
+        sizeToolStripMenuItem.BackColor = Color.White;
+        sizeToolStripMenuItem.ForeColor = Color.Black;
 
-            foreach (ToolStripItem item in sizeToolStripMenuItem.DropDownItems)
-            {
+        foreach (ToolStripItem item in sizeToolStripMenuItem.DropDownItems)
+        {
                 item.BackColor = Color.White;
-                item.ForeColor = menuStrip.ForeColor;
-            }
-
-            // Set background color for white theme (light theme)
-            aToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);
-            themeToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);
-            lightThemeToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);
-            darkThemeToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);
-            saveAsToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);
-            newToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);
-            saveToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);
-            exitToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);
-            openToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);
-            shortcutsToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);
-            plainTextToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);
-            cCToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);
-            printToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);
-
-
-            // Set foreground color (text color) for white theme (light theme)
-            editToolStripMenuItem.ForeColor = Color.Black;
-            aToolStripMenuItem.ForeColor = Color.Black;
-            themeToolStripMenuItem.ForeColor = Color.Black;
-            lightThemeToolStripMenuItem.ForeColor = Color.Black;
-            darkThemeToolStripMenuItem.ForeColor = Color.Black;
-            saveAsToolStripMenuItem.ForeColor = Color.Black;
-            newToolStripMenuItem.ForeColor = Color.Black;
-            saveToolStripMenuItem.ForeColor = Color.Black;
-            exitToolStripMenuItem.ForeColor = Color.Black;
-            openToolStripMenuItem.ForeColor = Color.Black;
-            shortcutsToolStripMenuItem.ForeColor = Color.Black;
-            plainTextToolStripMenuItem.ForeColor = Color.Black;
-            cCToolStripMenuItem.ForeColor = Color.Black;
-            printToolStripMenuItem.ForeColor = Color.Black;
-            editToolStripMenuItem.BackColor = menuStrip.BackColor;
-
-            AssignCustomRenderer();
-
-            statusStrip.BackColor = Color.LightGray;
-            statusStrip.ForeColor = Color.Black;
-            toolStripStatusLabelWordCount.ForeColor = Color.Black;
-            toolStripStatusLabelCharCount.ForeColor = Color.Black;
+                item.ForeColor = Color.Black;
         }
 
+        // Set background color for white theme (light theme)
+        aToolStripMenuItem.BackColor = Color.White;
+        themeToolStripMenuItem.BackColor = Color.White;
+        lightThemeToolStripMenuItem.BackColor = Color.White;
+        darkThemeToolStripMenuItem.BackColor = Color.White;
+        saveAsToolStripMenuItem.BackColor = Color.White;
+        newToolStripMenuItem.BackColor = Color.White;
+        saveToolStripMenuItem.BackColor = Color.White;
+        exitToolStripMenuItem.BackColor = Color.White;
+        openToolStripMenuItem.BackColor = Color.White;
+        shortcutsToolStripMenuItem.BackColor = Color.White;
+        plainTextToolStripMenuItem.BackColor = Color.White;
+        cCToolStripMenuItem.BackColor = Color.White;
+        printToolStripMenuItem.BackColor = Color.White;
+
+        // Set foreground color (text color) for menu items
+        editToolStripMenuItem.ForeColor = Color.Black;
+        aToolStripMenuItem.ForeColor = Color.Black;
+        themeToolStripMenuItem.ForeColor = Color.Black;
+        lightThemeToolStripMenuItem.ForeColor = Color.Black;
+        darkThemeToolStripMenuItem.ForeColor = Color.Black;
+        saveAsToolStripMenuItem.ForeColor = Color.Black;
+        newToolStripMenuItem.ForeColor = Color.Black;
+        saveToolStripMenuItem.ForeColor = Color.Black;
+        exitToolStripMenuItem.ForeColor = Color.Black;
+        openToolStripMenuItem.ForeColor = Color.Black;
+        shortcutsToolStripMenuItem.ForeColor = Color.Black;
+        plainTextToolStripMenuItem.ForeColor = Color.Black;
+        cCToolStripMenuItem.ForeColor = Color.Black;
+        printToolStripMenuItem.ForeColor = Color.Black;
+
+        // Set the background and foreground color of line numbers panel
+        panelLineNumbers.BackColor = Color.White;
+        panelLineNumbers.ForeColor = Color.Black;
+
+        AssignCustomRenderer();
+
+        // Set status strip colors
+        statusStrip.BackColor = Color.LightGray;
+        statusStrip.ForeColor = Color.Black;
+        toolStripStatusLabelWordCount.ForeColor = Color.Black;
+        toolStripStatusLabelCharCount.ForeColor = Color.Black;
+
+        // Invalidate the panel to refresh line numbers
+        panelLineNumbers.Invalidate();
+        }
         private void SetDarkTheme()
         {
-            SetTitleBarColor();
+        SetTitleBarColor();
 
-            defaultTextColor = Color.White;
+        defaultTextColor = Color.White;
 
-            this.BackColor = Color.FromArgb(30, 30, 30);
-            this.ForeColor = Color.FromArgb(30, 30, 30);
-            textBoxMain.BackColor = Color.FromArgb(30, 30, 30);
-            textBoxMain.ForeColor = Color.White;
-            textBoxMain.BorderStyle = BorderStyle.None;
+        this.BackColor = Color.FromArgb(30, 30, 30);
+        this.ForeColor = Color.White; // Corrected to white
+        textBoxMain.BackColor = Color.FromArgb(30, 30, 30);
+        textBoxMain.ForeColor = Color.White;
+        textBoxMain.BorderStyle = BorderStyle.None;
 
-            menuStrip.BackColor = Color.FromArgb(40, 40, 40);
-            menuStrip.ForeColor = Color.White;
+        menuStrip.BackColor = Color.FromArgb(40, 40, 40);
+        menuStrip.ForeColor = Color.White;
 
-            sizeToolStripMenuItem.BackColor = menuStrip.BackColor;
-            sizeToolStripMenuItem.ForeColor = menuStrip.ForeColor;
+        sizeToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
+        sizeToolStripMenuItem.ForeColor = Color.White;
 
-            foreach (ToolStripItem item in sizeToolStripMenuItem.DropDownItems)
-            {
-                item.BackColor = menuStrip.BackColor;
-                item.ForeColor = menuStrip.ForeColor;
-            }
-
-            editToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
-            aToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
-            themeToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
-            lightThemeToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
-            darkThemeToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
-            saveAsToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
-            newToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
-            saveToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
-            exitToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
-            openToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
-            shortcutsToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
-            plainTextToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
-            cCToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
-            printToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
-
-            editToolStripMenuItem.ForeColor = Color.White;
-            aToolStripMenuItem.ForeColor = Color.White;
-            themeToolStripMenuItem.ForeColor = Color.White;
-            lightThemeToolStripMenuItem.ForeColor = Color.White;
-            darkThemeToolStripMenuItem.ForeColor = Color.White;
-            saveAsToolStripMenuItem.ForeColor = Color.White;
-            newToolStripMenuItem.ForeColor = Color.White;
-            saveToolStripMenuItem.ForeColor = Color.White;
-            exitToolStripMenuItem.ForeColor = Color.White;
-            openToolStripMenuItem.ForeColor = Color.White;
-            shortcutsToolStripMenuItem.ForeColor = Color.White;
-            plainTextToolStripMenuItem.ForeColor = Color.White;
-            cCToolStripMenuItem.ForeColor = Color.White;
-            printToolStripMenuItem.ForeColor = Color.White;
-
-            AssignCustomRenderer(); // <----- Addition: Update renderer when theme changes
-
-            statusStrip.BackColor = Color.FromArgb(40, 40, 40);
-            statusStrip.ForeColor = Color.White;
-            toolStripStatusLabelWordCount.ForeColor = Color.White;
-            toolStripStatusLabelCharCount.ForeColor = Color.White;
+        foreach (ToolStripItem item in sizeToolStripMenuItem.DropDownItems)
+        {
+                item.BackColor = Color.FromArgb(40, 40, 40);
+                item.ForeColor = Color.White;
         }
+
+        // Set background color for dark theme
+        aToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
+        themeToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
+        lightThemeToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
+        darkThemeToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
+        saveAsToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
+        newToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
+        saveToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
+        exitToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
+        openToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
+        shortcutsToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
+        plainTextToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
+        cCToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
+        printToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
+
+        // Set foreground color (text color) for menu items
+        editToolStripMenuItem.ForeColor = Color.White;
+        aToolStripMenuItem.ForeColor = Color.White;
+        themeToolStripMenuItem.ForeColor = Color.White;
+        lightThemeToolStripMenuItem.ForeColor = Color.White;
+        darkThemeToolStripMenuItem.ForeColor = Color.White;
+        saveAsToolStripMenuItem.ForeColor = Color.White;
+        newToolStripMenuItem.ForeColor = Color.White;
+        saveToolStripMenuItem.ForeColor = Color.White;
+        exitToolStripMenuItem.ForeColor = Color.White;
+        openToolStripMenuItem.ForeColor = Color.White;
+        shortcutsToolStripMenuItem.ForeColor = Color.White;
+        plainTextToolStripMenuItem.ForeColor = Color.White;
+        cCToolStripMenuItem.ForeColor = Color.White;
+        printToolStripMenuItem.ForeColor = Color.White;
+
+        // Set the background and foreground color of line numbers panel
+        panelLineNumbers.BackColor = Color.FromArgb(40, 40, 40);
+        panelLineNumbers.ForeColor = Color.White;
+
+        AssignCustomRenderer(); // Ensure the renderer matches the theme
+
+        // Set status strip colors
+        statusStrip.BackColor = Color.FromArgb(40, 40, 40);
+        statusStrip.ForeColor = Color.White;
+        toolStripStatusLabelWordCount.ForeColor = Color.White;
+        toolStripStatusLabelCharCount.ForeColor = Color.White;
+
+        // Invalidate the panel to refresh line numbers
+        panelLineNumbers.Invalidate();
+        }
+
 
         /// <summary>
         /// Function for the strip menu item called "New",
@@ -550,10 +660,10 @@ namespace PlainTextEditor
 
         private void textBoxMain_TextChanged(object sender, EventArgs e)
         {
-            UpdateStatusCounts();
+        UpdateStatusCounts();
 
-            if (isCppEditorMode)
-            {
+        if (isCppEditorMode)
+        {
                 int selectionStart = textBoxMain.SelectionStart;
 
                 // Set the default color for new text
@@ -563,8 +673,12 @@ namespace PlainTextEditor
 
                 // Apply highlighting after new input
                 ApplyCppHighlighting();
-            }
         }
+
+        // Invalidate the line numbers panel to trigger repaint
+        panelLineNumbers.Invalidate();
+        }
+
 
         private void ChangeFontSize(int newSize)
         {
