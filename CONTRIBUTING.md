@@ -15,8 +15,8 @@ Please take a moment to review the following guidelines to ensure a smooth contr
 ### 2. **Clone Your Fork**
    - Clone the forked repository to your local machine:
      ```bash
-     git clone https://github.com/RaresRacsan/TextEditor.git
-     cd TextEditor
+     git clone https://github.com/RaresRacsan/PlainTextEditor.git
+     cd PlainTextEditor
      ```
 
 ### 3. **Create a Branch**
