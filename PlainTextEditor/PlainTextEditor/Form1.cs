@@ -2,6 +2,7 @@ using System.Runtime.InteropServices;
 using System.IO;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Text.RegularExpressions;
 
 namespace PlainTextEditor
 {
@@ -19,6 +20,11 @@ namespace PlainTextEditor
         private int words = 0;
         private int characters = 0;
         ToolStripMenuItem sizeToolStripMenuItem = new ToolStripMenuItem("Size");
+        private System.Timers.Timer highlightTimer; // Timer for debouncing
+        private const int highlightDelay = 300; // Delay in milliseconds
+
+        private RichTextBox hiddenBuffer = new RichTextBox();
+        private Color defaultTextColor = Color.White;
 
 
         /// <summary>
@@ -33,6 +39,11 @@ namespace PlainTextEditor
             SetDarkTheme();
             AssignCustomRenderer();
             UpdateStatusCounts();
+
+            // Initialize timer for debouncing
+            highlightTimer = new System.Timers.Timer(highlightDelay);
+            highlightTimer.AutoReset = false; // Ensure single execution per event
+            highlightTimer.Elapsed += (s, e) => Invoke(new Action(ApplyCppHighlighting)); // Update UI safely
 
         }
 
@@ -107,6 +118,10 @@ namespace PlainTextEditor
 
         private void SetLightTheme()
         {
+            SetTitleBarColor();
+
+            defaultTextColor = Color.Black;
+
             this.BackColor = Color.White;
             this.ForeColor = Color.Black;
             textBoxMain.BackColor = Color.White;
@@ -167,6 +182,8 @@ namespace PlainTextEditor
         private void SetDarkTheme()
         {
             SetTitleBarColor();
+
+            defaultTextColor = Color.White;
 
             this.BackColor = Color.FromArgb(30, 30, 30);
             this.ForeColor = Color.FromArgb(30, 30, 30);
@@ -483,6 +500,19 @@ namespace PlainTextEditor
         private void textBoxMain_TextChanged(object sender, EventArgs e)
         {
             UpdateStatusCounts();
+
+            if (isCppEditorMode)
+            {
+                int selectionStart = textBoxMain.SelectionStart;
+
+                // Set the default color for new text
+                textBoxMain.SelectionStart = selectionStart;
+                textBoxMain.SelectionLength = 0; // Ensure we're formatting new input
+                textBoxMain.SelectionColor = defaultTextColor;
+
+                // Apply highlighting after new input
+                ApplyCppHighlighting();
+            }
         }
 
         private void ChangeFontSize(int newSize)
@@ -741,15 +771,45 @@ namespace PlainTextEditor
             UpdateTitle();
         }
 
-        /// <summary>
-        /// Function to set special colors to words in order to help coding in C++
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void HighlightCppKeyWords(object sender, EventArgs e)
+        private void ApplyCppHighlighting()
         {
             if (!isCppEditorMode) return; // Skip if not in C++ mode
 
+            string text = textBoxMain.Text;
+            int selectionStart = textBoxMain.SelectionStart;
+            int selectionLength = textBoxMain.SelectionLength;
+
+            // Temporarily disable TextChanged event to avoid recursion
+            textBoxMain.TextChanged -= textBoxMain_TextChanged;
+
+            // Preserve font size and style
+            hiddenBuffer.Font = textBoxMain.Font;
+
+            // Perform highlighting on the hidden buffer
+            hiddenBuffer.Text = text;
+            hiddenBuffer.SelectAll();
+            hiddenBuffer.SelectionColor = defaultTextColor; // Reset to default color
+
+            // Highlight patterns and keywords
+            HighlightCppKeyWords(hiddenBuffer);
+            HighlightPattern(hiddenBuffer, "\".*?\"", Color.LightGreen); // Strings
+            HighlightPattern(hiddenBuffer, "<.*?>", Color.LightGreen);  // Angle brackets
+            HighlightPattern(hiddenBuffer, "//.*?$", Color.LightGray, RegexOptions.Multiline); // Single-line comments
+            HighlightPattern(hiddenBuffer, @"/\*.*?\*/", Color.LightGray, RegexOptions.Singleline); // Multi-line comments
+
+            // Replace the visible TextBox content with the highlighted content
+            textBoxMain.Rtf = hiddenBuffer.Rtf;
+
+            // Restore the cursor position and font
+            textBoxMain.SelectionStart = selectionStart;
+            textBoxMain.SelectionLength = selectionLength;
+
+            // Reattach the TextChanged event
+            textBoxMain.TextChanged += textBoxMain_TextChanged;
+        }
+
+        private void HighlightCppKeyWords(RichTextBox buffer)
+        {
             string[] variableTypeKeyWords = { "int", "float", "double", "bool", "string", "char", "void" };
             string[] controlFlowKeywords = { "if", "else", "switch", "case", "for", "while", "do", "break", "continue", "return" };
             string[] accessModifiers = { "public", "private", "protected", "class", "struct" };
@@ -758,24 +818,12 @@ namespace PlainTextEditor
 
             Dictionary<string[], Color> keywordCategories = new Dictionary<string[], Color>
     {
-            { variableTypeKeyWords, Color.DeepSkyBlue },
-            { controlFlowKeywords, Color.Violet },
-            { accessModifiers, Color.Fuchsia },
-            { cppStandardKeywords, Color.DarkOrange },
-            { includeDirectives, Color.ForestGreen }
+        { variableTypeKeyWords, Color.DeepSkyBlue },
+        { controlFlowKeywords, Color.Violet },
+        { accessModifiers, Color.Fuchsia },
+        { cppStandardKeywords, Color.DarkOrange },
+        { includeDirectives, Color.ForestGreen }
     };
-
-            string text = textBoxMain.Text;
-
-            int selectionStart = textBoxMain.SelectionStart;
-            int selectionLength = textBoxMain.SelectionLength;
-
-            // Temporarily disable TextChanged event to avoid recursion
-            textBoxMain.TextChanged -= HighlightCppKeyWords;
-
-            // Reset all text color
-            textBoxMain.Select(0, text.Length);
-            textBoxMain.SelectionColor = textBoxMain.ForeColor;
 
             foreach (var category in keywordCategories)
             {
@@ -785,56 +833,50 @@ namespace PlainTextEditor
                 foreach (string keyword in keywords)
                 {
                     int startIndex = 0;
-                    while ((startIndex = text.IndexOf(keyword, startIndex)) != -1)
+                    while ((startIndex = buffer.Text.IndexOf(keyword, startIndex)) != -1)
                     {
-                        // Check if the keyword is standalone
-                        bool isWordBoundary = (startIndex == 0 || !char.IsLetterOrDigit(text[startIndex - 1])) &&
-                                              (startIndex + keyword.Length == text.Length || !char.IsLetterOrDigit(text[startIndex + keyword.Length]));
+                        bool isWordBoundary = (startIndex == 0 || !char.IsLetterOrDigit(buffer.Text[startIndex - 1])) &&
+                                              (startIndex + keyword.Length == buffer.Text.Length || !char.IsLetterOrDigit(buffer.Text[startIndex + keyword.Length]));
                         if (isWordBoundary)
                         {
-                            textBoxMain.Select(startIndex, keyword.Length);
-                            textBoxMain.SelectionColor = color;
+                            buffer.Select(startIndex, keyword.Length);
+                            buffer.SelectionColor = color;
                         }
                         startIndex += keyword.Length;
                     }
                 }
             }
-
-            // Restore cursor position
-            textBoxMain.SelectionStart = selectionStart;
-            textBoxMain.SelectionLength = selectionLength;
-            textBoxMain.SelectionColor = textBoxMain.ForeColor;
-
-            // Reattach TextChanged event
-            textBoxMain.TextChanged += HighlightCppKeyWords;
         }
 
+        // Helper method to highlight patterns using regular expressions
+        private void HighlightPattern(RichTextBox buffer, string pattern, Color color, RegexOptions options = RegexOptions.None)
+        {
+            MatchCollection matches = Regex.Matches(buffer.Text, pattern, options);
+
+            foreach (Match match in matches)
+            {
+                buffer.Select(match.Index, match.Length);
+                buffer.SelectionColor = color;
+            }
+        }
+
+        // Enable C++ Editor Mode
         private void SetCppEditorMode()
         {
             isCppEditorMode = true;
-            textBoxMain.TextChanged += HighlightCppKeyWords;
-            HighlightCppKeyWords(null, null); // Trigger initial highlighting
+            textBoxMain.TextChanged += textBoxMain_TextChanged;
+            ApplyCppHighlighting(); // Trigger initial highlighting
         }
 
+        // Disable C++ Editor Mode
         private void SetPlainTextMode()
         {
             isCppEditorMode = false;
-            textBoxMain.TextChanged -= HighlightCppKeyWords; // Detach event handler
-            ResetTextBoxColors(); // Clear highlighting
-        }
-
-        private void ResetTextBoxColors()
-        {
-            int selectionStart = textBoxMain.SelectionStart;
-            int selectionLength = textBoxMain.SelectionLength;
+            textBoxMain.TextChanged -= textBoxMain_TextChanged;
 
             // Reset all text to default color
             textBoxMain.SelectAll();
-            textBoxMain.SelectionColor = textBoxMain.ForeColor;
-
-            // Restore cursor position
-            textBoxMain.SelectionStart = selectionStart;
-            textBoxMain.SelectionLength = selectionLength;
+            textBoxMain.SelectionColor = defaultTextColor;
         }
     }
 }
