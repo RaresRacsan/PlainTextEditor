@@ -16,12 +16,12 @@ PlainTextEditor is a simple text editor built using C# and Windows Forms. It pro
 - **Ctrl + N**: New File.
 - **Ctrl + O**: Open File.
 - **Ctrl + S**: Save File.
-- **Ctrl + T**: Change between themes,
-- **Ctrl + '+/-'**: Increase/Decrease size of font.
+- **Ctrl + T**: Change between themes.
+- **Ctrl + P**: Print File.
 - **Ctrl + W**: Close File.
+- **Ctrl + '+/-'**: Increase/Decrease size of font.
 - **Ctrl + '.'**: Change to C++ mode.
 - **Ctrl + ','**: Change to Plain Text mode.
-- **Ctrl + P**: Print File.
 ## Technologies Used
 
 - C# (Windows Forms)
