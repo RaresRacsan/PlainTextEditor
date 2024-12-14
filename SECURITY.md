@@ -47,4 +47,4 @@ This policy applies to:
 
 ## Thank You!
 
-We appreciate your help in keeping **TextEditor** safe and secure. Responsible disclosure of vulnerabilities helps ensure that we can protect our users and prevent potential damage from malicious exploitation.
+We appreciate your help in keeping **PlainTextEditor** safe and secure. Responsible disclosure of vulnerabilities helps ensure that we can protect our users and prevent potential damage from malicious exploitation.
