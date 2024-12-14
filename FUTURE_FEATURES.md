@@ -71,14 +71,3 @@ This document outlines the potential features planned for future versions of Pla
 
 ## Contributing
 Have an idea for a new feature? Feel free to submit suggestions or contribute to the implementation by opening an issue or pull request!
-
----
-
-### How to Use This File
-1. Keep this file in the root directory of the repository (or in a `docs` folder).
-2. Update this document as new features are implemented or additional ideas are added.
-3. Use it as a roadmap for future development!
-
----
-
-Feel free to adjust this file further to fit your repository’s style! Let me know if you'd like to expand on any feature ideas.
