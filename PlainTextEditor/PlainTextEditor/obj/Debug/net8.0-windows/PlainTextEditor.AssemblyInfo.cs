@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PlainTextEditor")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+08f71d783580ce5a4c6bfa3598d435ba4823aac7")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7acfc42aef6386108352727aa862d2d00ee584a7")]
 [assembly: System.Reflection.AssemblyProductAttribute("PlainTextEditor")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PlainTextEditor")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -115,8 +115,8 @@ namespace PlainTextEditor
 
         private void printToolStripMenuItem_Click(object sender, EventArgs e)
         {
-        try
-        {
+            try
+            {
 
                 printPreviewDialog.Document = printDocument;
 
@@ -130,39 +130,38 @@ namespace PlainTextEditor
 
                 // Show the Print Preview Dialog
                 printPreviewDialog.ShowDialog();
-        }
-        catch (Exception ex)
-        {
+            }
+            catch (Exception ex)
+            {
                 MessageBox.Show($"Print Preview failed: {ex.Message}", "Print Preview Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
+            }
         }
 
 
 
         private void PrintDocument_PrintPage(object sender, PrintPageEventArgs e)
         {
-        Font printFont = textBoxMain.Font;
+            Font printFont = textBoxMain.Font;
 
-        float leftMargin = e.MarginBounds.Left;
-        float topMargin = e.MarginBounds.Top;
-        int linesPerPage = (int)(e.MarginBounds.Height / printFont.GetHeight(e.Graphics));
-        string[] lines = printText.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);
-        int count = Math.Min(linesPerPage, lines.Length);
-        for (int i = 0; i < count; i++)
-        {
+            float leftMargin = e.MarginBounds.Left;
+            float topMargin = e.MarginBounds.Top;
+            int linesPerPage = (int)(e.MarginBounds.Height / printFont.GetHeight(e.Graphics));
+            string[] lines = printText.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);
+            int count = Math.Min(linesPerPage, lines.Length);
+            for (int i = 0; i < count; i++)
+            {
                 e.Graphics.DrawString(lines[i], printFont, Brushes.Black, leftMargin, topMargin + (i * printFont.GetHeight(e.Graphics)));
-        }
-        printText = string.Join("\n", lines.Skip(count));
-        if (lines.Length > count)
-        {
+            }
+            printText = string.Join("\n", lines.Skip(count));
+            if (lines.Length > count)
+            {
                 e.HasMorePages = true;
-        }
-        else
-        {
+            }
+            else
+            {
                 e.HasMorePages = false;
+            }
         }
-        }
-
 
         private void SetLightTheme()
         {
@@ -834,7 +833,7 @@ namespace PlainTextEditor
 
         private void shortcutsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Shortcuts:\n- CTRL + N - new file\n- CTRL + S - save file\n- CTRL + O - open file\n- CTRL + '+' - increase font size\n- CTRL + '-' - decrease font size\n- CTRL + W - close file\n- CTRL + T - change theme\n- CTRL + '.' - change to c++ mode\n- CTRL + ',' - change to plain text mode", "Shortcuts");
+            MessageBox.Show("Shortcuts:\n- CTRL + N - new file\n- CTRL + S - save file\n- CTRL + O - open file\n- CTRL + P - print file\n- CTRL + W - close file\n- CTRL + T - change theme\n- CTRL + '+' - increase font size\n- CTRL + '-' - decrease font size\n- CTRL + '.' - change to c++ mode\n- CTRL + ',' - change to plain text mode", "Shortcuts");
         }
 
         private void plainTextToolStripMenuItem_Click(object sender, EventArgs e)
@@ -955,6 +954,7 @@ namespace PlainTextEditor
             // Reset all text to default color
             textBoxMain.SelectAll();
             textBoxMain.SelectionColor = defaultTextColor;
+            textBoxMain.DeselectAll();
         }
     }
 }
