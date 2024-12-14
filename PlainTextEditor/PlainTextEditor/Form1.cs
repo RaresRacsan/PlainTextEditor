@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using System.Text.RegularExpressions;
 using System.Drawing.Printing;
 using System.Linq;
+using System.Text;
 
 namespace PlainTextEditor
 {
@@ -27,7 +28,6 @@ namespace PlainTextEditor
         private PrintDocument printDocument = new PrintDocument();
         private string printText = string.Empty;
         private PrintPreviewDialog printPreviewDialog = new PrintPreviewDialog();
-
 
         /// <summary>
         /// Starting the windows form application by initializing everything
@@ -799,6 +799,47 @@ namespace PlainTextEditor
                 // Prevent the default behavior of the Tab key (focus shift)
                 e.SuppressKeyPress = true;
                 e.Handled = true;
+            }
+        }
+
+        /// <summary>
+        /// Keypress event created for bracket matching
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void PlainTextEditor_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Matching brackets
+            if (e.KeyChar == '(' || e.KeyChar == '[' || e.KeyChar == '{')
+            {
+                char openingBracket = e.KeyChar;
+                string closingBracket = GetClosingBracket(openingBracket);
+                int cursorPoint = textBoxMain.SelectionStart;
+
+                textBoxMain.Text = textBoxMain.Text.Insert(cursorPoint, openingBracket.ToString());
+                textBoxMain.SelectionStart = cursorPoint + 1;
+
+                textBoxMain.Text = textBoxMain.Text.Insert(textBoxMain.SelectionStart, closingBracket);
+                textBoxMain.SelectionStart = cursorPoint + 1;
+
+                e.Handled = true;
+            }
+        }
+
+        /// <summary>
+        /// Helper function for the match of the brackets, it is returning the corrent closing bracket for
+        /// the currently typed bracket
+        /// </summary>
+        /// <param name="openBracket"></param>
+        /// <returns></returns>
+        private string GetClosingBracket(char openBracket)
+        {
+            switch (openBracket)
+            {
+                case '(': return ")";
+                case '{': return "}";
+                case '[': return "]";
+                default: return "";
             }
         }
 
