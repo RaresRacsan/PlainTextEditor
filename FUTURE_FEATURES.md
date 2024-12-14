@@ -31,7 +31,7 @@ This document outlines the potential features planned for future versions of Pla
 
 ---
 
-### 4. ~~Bracket Matching~~ 
+### 4. ~~Bracket Matching~~ :heavy_check_mark:
 - Highlight matching pairs of brackets (`{}`, `[]`, `()`), especially useful in C++ editor mode.
 - **Benefits**: 
   - Reduces syntax errors.
