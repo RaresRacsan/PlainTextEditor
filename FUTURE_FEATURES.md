@@ -4,7 +4,7 @@ This document outlines the potential features planned for future versions of Pla
 
 ## Feature Ideas
 
-### 1. Line Numbers
+### 1. ~~Line Numbers~~ :heavy_check_mark:
 - Display line numbers alongside the text editor for easier navigation and reference.
 - **Benefits**: 
   - Improves readability for developers.
