@@ -174,6 +174,7 @@
             // 
             // textBoxMain
             // 
+            textBoxMain.AcceptsTab = true;
             textBoxMain.Dock = DockStyle.Fill;
             textBoxMain.Location = new Point(0, 24);
             textBoxMain.Name = "textBoxMain";

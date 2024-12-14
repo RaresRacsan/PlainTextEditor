@@ -20,9 +20,6 @@ namespace PlainTextEditor
         private int words = 0;
         private int characters = 0;
         ToolStripMenuItem sizeToolStripMenuItem = new ToolStripMenuItem("Size");
-        private System.Timers.Timer highlightTimer; // Timer for debouncing
-        private const int highlightDelay = 300; // Delay in milliseconds
-
         private RichTextBox hiddenBuffer = new RichTextBox();
         private Color defaultTextColor = Color.White;
 
@@ -39,12 +36,6 @@ namespace PlainTextEditor
             SetDarkTheme();
             AssignCustomRenderer();
             UpdateStatusCounts();
-
-            // Initialize timer for debouncing
-            highlightTimer = new System.Timers.Timer(highlightDelay);
-            highlightTimer.AutoReset = false; // Ensure single execution per event
-            highlightTimer.Elapsed += (s, e) => Invoke(new Action(ApplyCppHighlighting)); // Update UI safely
-
         }
 
         private void InitializeStatusStrip()
@@ -722,6 +713,27 @@ namespace PlainTextEditor
             if (e.Control && e.KeyCode == Keys.Oemcomma)
             {
                 SetPlainTextMode();
+            }
+
+            // Pressing Tab -> spaces
+            if (e.KeyCode == Keys.Tab)
+            {
+                // Define the number of spaces to insert (e.g., 4 spaces)
+                const int tabSize = 4;
+                string spaces = new string(' ', tabSize);
+
+                // Get the current cursor position
+                int cursorPosition = textBoxMain.SelectionStart;
+
+                // Insert spaces at the cursor position
+                textBoxMain.Text = textBoxMain.Text.Insert(cursorPosition, spaces);
+
+                // Move the cursor to the end of the inserted spaces
+                textBoxMain.SelectionStart = cursorPosition + tabSize;
+
+                // Prevent the default behavior of the Tab key (focus shift)
+                e.SuppressKeyPress = true;
+                e.Handled = true;
             }
         }
 
