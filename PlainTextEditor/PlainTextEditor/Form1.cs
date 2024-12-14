@@ -425,23 +425,6 @@ namespace PlainTextEditor
             originalFileContent = string.Empty;
             UpdateTitle();
         }
-        private void InitializeLineNumbersPanel()
-        {
-        panelLineNumbers = new Panel();
-        panelLineNumbers.Width = 25;
-        panelLineNumbers.Dock = DockStyle.Left;
-        panelLineNumbers.BackColor = IsDarkTheme() ? Color.FromArgb(40, 40, 40) : Color.LightGray;
-        panelLineNumbers.Paint += panelLineNumbers_Paint;
-        panelLineNumbers.Margin = new Padding(0);
-        panelLineNumbers.Padding = new Padding(0);
-
-        // Add the panel to the form's controls before textBoxMain
-        this.Controls.Add(panelLineNumbers);
-        panelLineNumbers.BringToFront();
-
-        // Adjust textBoxMain to fill the remaining space
-        textBoxMain.Dock = DockStyle.Fill;
-        }
 
         /// <summary>
         /// Function for the "Open" strip menu item, to open an already created file
