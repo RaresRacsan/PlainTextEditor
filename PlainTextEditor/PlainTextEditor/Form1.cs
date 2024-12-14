@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Drawing.Printing;
 using System.Linq;
 using System.Text;
+using System.Collections.Generic;
 
 namespace PlainTextEditor
 {
@@ -28,6 +29,97 @@ namespace PlainTextEditor
         private PrintDocument printDocument = new PrintDocument();
         private string printText = string.Empty;
         private PrintPreviewDialog printPreviewDialog = new PrintPreviewDialog();
+        private Panel panelLineNumbers;
+
+
+
+        // Import user32.dll to get scroll position if needed
+        [DllImport("user32.dll")]
+        private static extern int GetScrollPos(IntPtr hWnd, int nBar);
+
+        private const int SB_VERT = 1;
+
+        /// <summary>
+        /// Gets the first visible line index in the RichTextBox.
+        /// </summary>
+        private int GetFirstVisibleLine(RichTextBox rtb)
+        {
+        int firstCharIndex = rtb.GetCharIndexFromPosition(new Point(0, 0));
+        int firstLine = rtb.GetLineFromCharIndex(firstCharIndex);
+        return firstLine;
+        }
+
+        /// <summary>
+        /// Paint event handler for the line numbers panel.
+        /// </summary>
+        private void panelLineNumbers_Paint(object sender, PaintEventArgs e)
+        {
+        // Determine the first visible line
+        int firstVisibleLine = GetFirstVisibleLine(textBoxMain);
+
+        // Determine the total number of lines
+        int totalLines = textBoxMain.GetLineFromCharIndex(textBoxMain.TextLength) + 1;
+
+
+        using (Font lineNumberFont = new Font(textBoxMain.Font.FontFamily, 8))
+        {
+
+                float textLineHeight = textBoxMain.Font.GetHeight(e.Graphics);
+
+                float lineNumberLineHeight = lineNumberFont.GetHeight(e.Graphics);
+
+
+                float verticalOffset = (textLineHeight - lineNumberLineHeight) / 2;
+
+
+                int visibleLines = (int)(panelLineNumbers.Height / textLineHeight);
+
+
+                Brush brush = new SolidBrush(panelLineNumbers.ForeColor);
+
+                for (int i = 0; i < visibleLines; i++)
+                {
+                int lineNumber = firstVisibleLine + i + 1;
+                if (lineNumber > totalLines)
+                        break;
+
+
+                float yPosition = i * textLineHeight - (textBoxMain.GetPositionFromCharIndex(textBoxMain.GetFirstCharIndexFromLine(firstVisibleLine)).Y % textLineHeight) + verticalOffset;
+
+
+                string lineNumberText = lineNumber.ToString();
+                SizeF textSize = e.Graphics.MeasureString(lineNumberText, lineNumberFont);
+                e.Graphics.DrawString(lineNumberText, lineNumberFont, brush, panelLineNumbers.Width - textSize.Width - 5, yPosition);
+                }
+        }
+        }
+
+
+        /// <summary>
+        /// Event handler for vertical scrolling of the RichTextBox.
+        /// </summary>
+        private void TextBoxMain_VScroll(object sender, EventArgs e)
+        {
+        panelLineNumbers.Invalidate();
+        }
+
+        /// <summary>
+        /// Event handler for text changes in the RichTextBox to update line numbers.
+        /// </summary>
+        private void TextBoxMain_TextChanged_ForLineNumbers(object sender, EventArgs e)
+        {
+        panelLineNumbers.Invalidate();
+        UpdateStatusCounts(); // Ensure status counts are updated
+        }
+
+        /// <summary>
+        /// Event handler for resizing of the RichTextBox.
+        /// </summary>
+        private void TextBoxMain_Resize(object sender, EventArgs e)
+        {
+        panelLineNumbers.Invalidate();
+        }
+
 
         /// <summary>
         /// Starting the windows form application by initializing everything
@@ -42,6 +134,9 @@ namespace PlainTextEditor
             AssignCustomRenderer();
             UpdateStatusCounts();
             printDocument.PrintPage += PrintDocument_PrintPage;
+            textBoxMain.VScroll += TextBoxMain_VScroll;
+            textBoxMain.TextChanged += TextBoxMain_TextChanged_ForLineNumbers;
+            textBoxMain.Resize += TextBoxMain_Resize;
         }
 
         private void InitializeStatusStrip()
@@ -201,6 +296,8 @@ namespace PlainTextEditor
             plainTextToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);
             cCToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);
             printToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);
+            panelLineNumbers.ForeColor = Color.FromArgb(255, 255, 255);
+
 
 
             // Set foreground color (text color) for white theme (light theme)
@@ -219,13 +316,14 @@ namespace PlainTextEditor
             cCToolStripMenuItem.ForeColor = Color.Black;
             printToolStripMenuItem.ForeColor = Color.Black;
             editToolStripMenuItem.BackColor = menuStrip.BackColor;
-
+            panelLineNumbers.ForeColor = Color.Black;
             AssignCustomRenderer();
 
             statusStrip.BackColor = Color.LightGray;
             statusStrip.ForeColor = Color.Black;
             toolStripStatusLabelWordCount.ForeColor = Color.Black;
             toolStripStatusLabelCharCount.ForeColor = Color.Black;
+            panelLineNumbers.Invalidate();
         }
 
         private void SetDarkTheme()
@@ -266,6 +364,9 @@ namespace PlainTextEditor
             plainTextToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
             cCToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
             printToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
+            panelLineNumbers.BackColor = Color.FromArgb(40, 40, 40);
+
+
 
             editToolStripMenuItem.ForeColor = Color.White;
             aToolStripMenuItem.ForeColor = Color.White;
@@ -281,13 +382,14 @@ namespace PlainTextEditor
             plainTextToolStripMenuItem.ForeColor = Color.White;
             cCToolStripMenuItem.ForeColor = Color.White;
             printToolStripMenuItem.ForeColor = Color.White;
-
+            panelLineNumbers.ForeColor = Color.White;
             AssignCustomRenderer(); // <----- Addition: Update renderer when theme changes
 
             statusStrip.BackColor = Color.FromArgb(40, 40, 40);
             statusStrip.ForeColor = Color.White;
             toolStripStatusLabelWordCount.ForeColor = Color.White;
             toolStripStatusLabelCharCount.ForeColor = Color.White;
+            panelLineNumbers.Invalidate();
         }
 
         /// <summary>
@@ -322,6 +424,23 @@ namespace PlainTextEditor
             currentFilePath = null;
             originalFileContent = string.Empty;
             UpdateTitle();
+        }
+        private void InitializeLineNumbersPanel()
+        {
+        panelLineNumbers = new Panel();
+        panelLineNumbers.Width = 25;
+        panelLineNumbers.Dock = DockStyle.Left;
+        panelLineNumbers.BackColor = IsDarkTheme() ? Color.FromArgb(40, 40, 40) : Color.LightGray;
+        panelLineNumbers.Paint += panelLineNumbers_Paint;
+        panelLineNumbers.Margin = new Padding(0);
+        panelLineNumbers.Padding = new Padding(0);
+
+        // Add the panel to the form's controls before textBoxMain
+        this.Controls.Add(panelLineNumbers);
+        panelLineNumbers.BringToFront();
+
+        // Adjust textBoxMain to fill the remaining space
+        textBoxMain.Dock = DockStyle.Fill;
         }
 
         /// <summary>
@@ -550,10 +669,10 @@ namespace PlainTextEditor
 
         private void textBoxMain_TextChanged(object sender, EventArgs e)
         {
-            UpdateStatusCounts();
+        UpdateStatusCounts();
 
-            if (isCppEditorMode)
-            {
+        if (isCppEditorMode)
+        {
                 int selectionStart = textBoxMain.SelectionStart;
 
                 // Set the default color for new text
@@ -563,8 +682,12 @@ namespace PlainTextEditor
 
                 // Apply highlighting after new input
                 ApplyCppHighlighting();
-            }
         }
+
+        // Invalidate the line numbers panel to trigger repaint
+        panelLineNumbers.Invalidate();
+        }
+
 
         private void ChangeFontSize(int newSize)
         {
