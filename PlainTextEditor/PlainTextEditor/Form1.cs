@@ -61,7 +61,7 @@ namespace PlainTextEditor
         int totalLines = textBoxMain.GetLineFromCharIndex(textBoxMain.TextLength) + 1;
 
 
-        using (Font lineNumberFont = new Font(textBoxMain.Font.FontFamily, 8))
+        using (Font lineNumberFont = new Font(textBoxMain.Font.FontFamily, 6))
         {
 
                 float textLineHeight = textBoxMain.Font.GetHeight(e.Graphics);
