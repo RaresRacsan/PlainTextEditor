@@ -3,6 +3,8 @@ using System.IO;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
+using System.Drawing.Printing;
+using System.Linq;
 
 namespace PlainTextEditor
 {
@@ -22,6 +24,9 @@ namespace PlainTextEditor
         ToolStripMenuItem sizeToolStripMenuItem = new ToolStripMenuItem("Size");
         private RichTextBox hiddenBuffer = new RichTextBox();
         private Color defaultTextColor = Color.White;
+        private PrintDocument printDocument = new PrintDocument();
+        private string printText = string.Empty;
+        private PrintPreviewDialog printPreviewDialog = new PrintPreviewDialog();
 
 
         /// <summary>
@@ -36,6 +41,7 @@ namespace PlainTextEditor
             SetDarkTheme();
             AssignCustomRenderer();
             UpdateStatusCounts();
+            printDocument.PrintPage += PrintDocument_PrintPage;
         }
 
         private void InitializeStatusStrip()
@@ -77,7 +83,7 @@ namespace PlainTextEditor
         }
 
         /// <summary>
-        /// Function that updates the title of the form, in order to contain the name of the file that 
+        /// Function that updates the title of the form, in order to contain the name of the file that
         /// is currently open
         /// </summary>
         private void UpdateTitle()
@@ -106,6 +112,57 @@ namespace PlainTextEditor
                 UpdateTitle();
             }
         }
+
+        private void printToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+        try
+        {
+
+                printPreviewDialog.Document = printDocument;
+
+                // Assign the current text to printText
+                printText = textBoxMain.Text;
+
+
+                printPreviewDialog.Width = 800;
+                printPreviewDialog.Height = 600;
+                printPreviewDialog.Text = "Print Preview - PlainTextEditor";
+
+                // Show the Print Preview Dialog
+                printPreviewDialog.ShowDialog();
+        }
+        catch (Exception ex)
+        {
+                MessageBox.Show($"Print Preview failed: {ex.Message}", "Print Preview Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+        }
+
+
+
+        private void PrintDocument_PrintPage(object sender, PrintPageEventArgs e)
+        {
+        Font printFont = textBoxMain.Font;
+
+        float leftMargin = e.MarginBounds.Left;
+        float topMargin = e.MarginBounds.Top;
+        int linesPerPage = (int)(e.MarginBounds.Height / printFont.GetHeight(e.Graphics));
+        string[] lines = printText.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);
+        int count = Math.Min(linesPerPage, lines.Length);
+        for (int i = 0; i < count; i++)
+        {
+                e.Graphics.DrawString(lines[i], printFont, Brushes.Black, leftMargin, topMargin + (i * printFont.GetHeight(e.Graphics)));
+        }
+        printText = string.Join("\n", lines.Skip(count));
+        if (lines.Length > count)
+        {
+                e.HasMorePages = true;
+        }
+        else
+        {
+                e.HasMorePages = false;
+        }
+        }
+
 
         private void SetLightTheme()
         {
@@ -144,6 +201,8 @@ namespace PlainTextEditor
             shortcutsToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);
             plainTextToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);
             cCToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);
+            printToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);
+
 
             // Set foreground color (text color) for white theme (light theme)
             editToolStripMenuItem.ForeColor = Color.Black;
@@ -159,7 +218,7 @@ namespace PlainTextEditor
             shortcutsToolStripMenuItem.ForeColor = Color.Black;
             plainTextToolStripMenuItem.ForeColor = Color.Black;
             cCToolStripMenuItem.ForeColor = Color.Black;
-
+            printToolStripMenuItem.ForeColor = Color.Black;
             editToolStripMenuItem.BackColor = menuStrip.BackColor;
 
             AssignCustomRenderer();
@@ -207,6 +266,7 @@ namespace PlainTextEditor
             shortcutsToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
             plainTextToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
             cCToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
+            printToolStripMenuItem.BackColor = Color.FromArgb(40, 40, 40);
 
             editToolStripMenuItem.ForeColor = Color.White;
             aToolStripMenuItem.ForeColor = Color.White;
@@ -221,6 +281,7 @@ namespace PlainTextEditor
             shortcutsToolStripMenuItem.ForeColor = Color.White;
             plainTextToolStripMenuItem.ForeColor = Color.White;
             cCToolStripMenuItem.ForeColor = Color.White;
+            printToolStripMenuItem.ForeColor = Color.White;
 
             AssignCustomRenderer(); // <----- Addition: Update renderer when theme changes
 
@@ -231,7 +292,7 @@ namespace PlainTextEditor
         }
 
         /// <summary>
-        /// Function for the strip menu item called "New", 
+        /// Function for the strip menu item called "New",
         /// it is creating a new empty file
         /// </summary>
         /// <param name="sender"></param>
@@ -666,6 +727,11 @@ namespace PlainTextEditor
                     float newSize = currentSize - 4;
                     ChangeFontSize((int)(newSize));
                 }
+            }
+            // Print (Ctrl + P)
+            if (e.Control && e.KeyCode == Keys.P)
+            {
+                printToolStripMenuItem_Click(sender, e);
             }
 
             // Change Themes
