@@ -1,6 +1,6 @@
-# Contributing to TextEditor
+# Contributing to PlainTextEditor
 
-First off, thank you for considering contributing to **TextEditor**! 🎉
+First off, thank you for considering contributing to **PlainTextEditor**! 🎉
 
 We welcome contributions from the community. Whether you're fixing a bug, adding a new feature, or improving the documentation, your help is greatly appreciated.
 
@@ -84,4 +84,4 @@ By contributing, you agree that your contributions will be licensed under the [M
 
 ---
 
-Thank you for contributing to **TextEditor**! Your contributions help make the project better for everyone. 🚀
+Thank you for contributing to **PlainTextEditor**! Your contributions help make the project better for everyone. 🚀
