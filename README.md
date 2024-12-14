@@ -1,5 +1,5 @@
-# TextEditor
-TextEditor is a simple text editor built using C# and Windows Forms. It provides basic text editing functionality, including features like creating new files, opening existing files, saving files, and changing the app's theme (light/dark).
+# PlainTextEditor
+PlainTextEditor is a simple text editor built using C# and Windows Forms. It provides basic text editing functionality, including features like creating new files, opening existing files, saving files, and changing the app's theme (light/dark).
 
 ## Features
 
@@ -38,7 +38,7 @@ To run the project, you'll need:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/RaresRacsan/TextEditor.git
+   git clone https://github.com/RaresRacsan/PlainTextEditor.git
    cd PlainTextEditor
    ```
 
@@ -82,4 +82,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 Feel free to fork this repository and submit pull requests. If you encounter any bugs or want to request new features, feel free to open an issue!
 
-Thank you for using TextEditor!
+Thank you for using PlainTextEditor!
