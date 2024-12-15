@@ -912,7 +912,7 @@ namespace PlainTextEditor
                 e.Handled = true;
             }
 
-            // For block creating after inputting {}
+            // Creating space block between {}
             if(e.KeyCode == Keys.Enter)
             {
                 int cursorPos = textBoxMain.SelectionStart;
@@ -923,6 +923,28 @@ namespace PlainTextEditor
                     {
                         textBoxMain.Text = textBoxMain.Text.Insert(cursorPos, "\n\t\n");
                         textBoxMain.SelectionStart = cursorPos + 2;
+                        e.Handled = true;
+                    }
+                }
+            }
+
+            // Deleting both brackets if one next to the other
+            if(e.KeyCode == Keys.Back)
+            {
+                int cursorPos = textBoxMain.SelectionStart;
+                if(cursorPos > 0)
+                {
+                    // Get the characters before the cursor and after the cursor
+                    char prevChar = textBoxMain.Text[cursorPos - 1];
+                    char nextChar = (cursorPos < textBoxMain.Text.Length) ? textBoxMain.Text[cursorPos] : '\0';
+
+                    if((prevChar == '(' && nextChar == ')') || (prevChar == '[' && prevChar == ']') || (prevChar == '{' && nextChar == '}'))
+                    {
+                        // Remove both brackets
+                        textBoxMain.Text = textBoxMain.Text.Remove(cursorPos - 1, 2);
+
+                        // Set the cursor position after the brackets are removed
+                        textBoxMain.SelectionStart = cursorPos - 1;
                         e.Handled = true;
                     }
                 }
