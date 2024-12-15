@@ -726,7 +726,7 @@ namespace PlainTextEditor
         private void editTextSize()
         {
             // Changing the font of the textBoxMain
-            textBoxMain.Font = new Font("Consolas", 12);
+            textBoxMain.Font = new Font("Consolas", 12, FontStyle.Bold);
 
             // Size submenu
             editToolStripMenuItem.DropDownItems.Add(sizeToolStripMenuItem);
@@ -948,7 +948,7 @@ namespace PlainTextEditor
             switch (openBracket)
             {
                 case '(': return ")";
-                case '{': return "}";
+                case '{': return "\n}";
                 case '[': return "]";
                 default: return "";
             }
@@ -1039,20 +1039,28 @@ namespace PlainTextEditor
 
         private void HighlightCppKeyWords(RichTextBox buffer)
         {
-            string[] variableTypeKeyWords = { "int", "float", "double", "bool", "string", "char", "void" };
-            string[] controlFlowKeywords = { "if", "else", "switch", "case", "for", "while", "do", "break", "continue", "return" };
-            string[] accessModifiers = { "public", "private", "protected", "class", "struct" };
-            string[] cppStandardKeywords = { "std", "cout", "cin", "endl", "namespace", "using" };
+            string[] variableTypeKeyWords = { "int", "float", "double", "char", "bool", "wchar_t", "void", "short", "signed", "unsigned", "long", "auto", "decltype", "const", "constexpr", "mutable", "nullptr", "true", "false" };
+            string[] controlFlowKeywords = { "if", "else", "switch", "case", "default", "while", "do", "for", "break", "continue", "return", "goto" };
+            string[] cppStandardKeywords = { "std", "cout", "cin", "endl", "namespace", "using", "::" };
             string[] includeDirectives = { "#include" };
+            string[] classRelatedKeywords = { "class", "struct", "public", "private", "protected", "virtual", "friend", "static", "explicit", "inline", "final", "override", "abstract", "typeid", "typename", "this", "new", "delete", "new[]", "delete[]" };
+            string[] exceptionHandling = { "try", "catch", "throw", "noexcept" };
+            string[] typeAndTypeModifiers = { "typedef", "typeid", "typename", "volatile", "alignas", "alignof", "thread_local" };
+            string[] templateKeyWords = { "template" };
+            string[] miscellaneous = { "const_cast", "dynamic_cast", "reinterpret_cast", "static_cast" };
 
             Dictionary<string[], Color> keywordCategories = new Dictionary<string[], Color>
-    {
-        { variableTypeKeyWords, Color.DeepSkyBlue },
-        { controlFlowKeywords, Color.Violet },
-        { accessModifiers, Color.Fuchsia },
-        { cppStandardKeywords, Color.DarkOrange },
-        { includeDirectives, Color.ForestGreen }
-    };
+            {
+                { variableTypeKeyWords, Color.FromArgb(0, 123, 255) }, // - Blue -
+                { controlFlowKeywords, Color.FromArgb(255, 105, 180) }, // - Pink -
+                { cppStandardKeywords, Color.FromArgb(255, 159, 28) }, // - Orange -
+                { includeDirectives, Color.FromArgb(34, 139, 34) }, // - Forest Green -
+                { classRelatedKeywords, Color.FromArgb(0, 128, 128) }, // - Teal -
+                { exceptionHandling, Color.FromArgb(255, 193, 7) }, // - Yellow -
+                { typeAndTypeModifiers, Color.FromArgb(220, 53, 69) }, // - Red -
+                { templateKeyWords, Color.FromArgb(173, 216, 230) }, //  - Light Blue -
+                { miscellaneous, Color.FromArgb(169, 169, 169) } // - Gray -
+            };
 
             foreach (var category in keywordCategories)
             {
