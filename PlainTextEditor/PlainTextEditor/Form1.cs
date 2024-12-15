@@ -911,6 +911,22 @@ namespace PlainTextEditor
                 e.SuppressKeyPress = true;
                 e.Handled = true;
             }
+
+            // For block creating after inputting {}
+            if(e.KeyCode == Keys.Enter)
+            {
+                int cursorPos = textBoxMain.SelectionStart;
+                if(textBoxMain.Text.Length > 0)
+                {
+                    char lastChar = textBoxMain.Text[cursorPos - 1];
+                    if (lastChar == '{')
+                    {
+                        textBoxMain.Text = textBoxMain.Text.Insert(cursorPos, "\n\t\n");
+                        textBoxMain.SelectionStart = cursorPos + 2;
+                        e.Handled = true;
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -948,7 +964,7 @@ namespace PlainTextEditor
             switch (openBracket)
             {
                 case '(': return ")";
-                case '{': return "\n}";
+                case '{': return "}";
                 case '[': return "]";
                 default: return "";
             }
