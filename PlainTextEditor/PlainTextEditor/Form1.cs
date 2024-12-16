@@ -164,6 +164,11 @@ namespace PlainTextEditor
             }
         }
 
+        /// <summary>
+        /// The implementation for finding the next appearence of the wanted string
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FindNext_Click(object sender, EventArgs e)
         {
             string searchText = findTextBox.Text;
@@ -185,6 +190,11 @@ namespace PlainTextEditor
             }
         }
 
+        /// <summary>
+        /// The implementation for finding the previous appearence of the wanted string
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FindPrev_Click(object sender, EventArgs e)
         {
             string searchText = findTextBox.Text;
@@ -205,6 +215,11 @@ namespace PlainTextEditor
             }
         }
 
+        /// <summary>
+        /// The implementation for replacing the searched string with a new one
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Replace_Click(object sender, EventArgs e)
         {
             string searchText = findTextBox.Text;
@@ -212,10 +227,18 @@ namespace PlainTextEditor
 
             if(string.IsNullOrEmpty (searchText)) return;
 
-            if (textBoxMain.SelectedText == searchText) textBoxMain.SelectedText = replacementText;
+            if(string.IsNullOrEmpty(replacementText))
+            {
+                MessageBox.Show("The Replace With box is empty.", "Replace", MessageBoxButtons.OK);
+            }
 
-            // Move to the next match
-            FindNext_Click(sender, e);
+            else
+            {
+                if (textBoxMain.SelectedText == searchText) textBoxMain.SelectedText = replacementText;
+
+                // Move to the next match
+                FindNext_Click(sender, e);
+            }
         }
 
         // Import user32.dll to get scroll position if needed
