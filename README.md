@@ -12,6 +12,7 @@ PlainTextEditor is a simple text editor built using C# and Windows Forms. It pro
 - **Mode Switching (Plain Text / C++ Editor)**: Switch between Plain Text mode and C++ Editor mode. In C++ mode, syntax highlighting is applied to variable types, control flow keywords, and #include statements.
 - **Keyboard Shortcuts**: Use keyboard shortcuts for efficient navigation and file operations.
 - **Bracket Matching**: Automatically closes the bracket.
+- **Find and Replace**: Find a string and replace it with something else if you want.
 
 ## Keyboard Shortcuts
 - **Ctrl + N**: New File.
@@ -20,6 +21,7 @@ PlainTextEditor is a simple text editor built using C# and Windows Forms. It pro
 - **Ctrl + T**: Change between themes.
 - **Ctrl + P**: Print File.
 - **Ctrl + W**: Close File.
+- **Ctrl + F**: Find and Replace
 - **Ctrl + '+/-'**: Increase/Decrease size of font.
 - **Ctrl + '.'**: Change to C++ mode.
 - **Ctrl + ','**: Change to Plain Text mode.
@@ -62,6 +64,9 @@ To run the project, you'll need:
 8. Switch Modes:
    - Plain Text Mode: Switch to Plain Text mode where no syntax highlighting is applied.
    - C++ Editor Mode: Switch to C++ mode, where syntax highlighting for C++ keywords, variable types, control flow statements, and #include directives is applied.
+9. Find and Replace:
+   - In the Find text box, enter the string you want to search for.
+   - To replace the found string, enter the replacement text in the Replace text box.
 
 ## Screenshots
 
