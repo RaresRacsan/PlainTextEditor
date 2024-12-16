@@ -12,7 +12,7 @@ This document outlines the potential features planned for future versions of Pla
 
 ---
 
-### 2. Search and Replace
+### 2. ~~Search and Replace~~ :heavy_check_mark:
 - Add functionality to search for specific text within the editor, with an option to replace it.
 - **Benefits**: 
   - Speeds up the process of modifying repetitive text.
