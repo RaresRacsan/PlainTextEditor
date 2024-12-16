@@ -30,9 +30,8 @@ namespace PlainTextEditor
         private string printText = string.Empty;
         private PrintPreviewDialog printPreviewDialog = new PrintPreviewDialog();
         private Panel panelLineNumbers;
-
-        private ToolStripMenuItem findReplaceMenuItem; // Menu item
-        private ToolStrip toolStripFindReplace;       // Find and Replace ToolStrip
+        private ToolStripMenuItem findReplaceMenuItem;
+        private ToolStrip toolStripFindReplace;
         private ToolStripTextBox findTextBox;
         private ToolStripTextBox replaceTextBox;
         private ToolStripButton findNextButton;
@@ -40,12 +39,18 @@ namespace PlainTextEditor
         private ToolStripButton replaceButton;
         private int currentSearchIndex = 0;
 
+        /// <summary>
+        /// Function initializing the find and replace toolstripmenuitem
+        /// </summary>
         private void InitializeFindReplaceMenu()
         {
             findReplaceMenuItem = new ToolStripMenuItem("Find and Replace", null, FindReplaceMenuItem_Click);
             menuStrip.Items.Add(findReplaceMenuItem);
         }
 
+        /// <summary>
+        /// Initializing the items from the toolsrtripmenuitem
+        /// </summary>
         private void FindReplaceInitEvent()
         {
             if (toolStripFindReplace == null)
@@ -98,11 +103,19 @@ namespace PlainTextEditor
             }
         }
 
+        /// <summary>
+        /// Event for when the find and replace is needed, via toolstripmenuitem or via ctrl f
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FindReplaceMenuItem_Click(object sender, EventArgs e)
         {
             FindReplaceInitEvent();
         }
 
+        /// <summary>
+        /// Custom renderer for removing the border of the toolstripmenuitem
+        /// </summary>
         public class CustomRenderer : ToolStripRenderer
         {
             protected override void OnRenderToolStripBorder(ToolStripRenderEventArgs e)
@@ -111,6 +124,9 @@ namespace PlainTextEditor
             }
         }
 
+        /// <summary>
+        /// Function for updating the color of the strip, following the theme
+        /// </summary>
         private void UpdateToolStripColor()
         {
             if(toolStripFindReplace != null)
@@ -388,8 +404,6 @@ namespace PlainTextEditor
             }
         }
 
-
-
         private void PrintDocument_PrintPage(object sender, PrintPageEventArgs e)
         {
             Font printFont = textBoxMain.Font;
@@ -486,6 +500,7 @@ namespace PlainTextEditor
             // Invalidate the panel to refresh line numbers
             panelLineNumbers.Invalidate();
         }
+
         private void SetDarkTheme()
         {
             SetTitleBarColor();
@@ -1199,7 +1214,7 @@ namespace PlainTextEditor
 
         private void shortcutsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Shortcuts:\n- CTRL + N - new file\n- CTRL + S - save file\n- CTRL + O - open file\n- CTRL + P - print file\n- CTRL + W - close file\n- CTRL + T - change theme\n- CTRL + '+' - increase font size\n- CTRL + '-' - decrease font size\n- CTRL + '.' - change to c++ mode\n- CTRL + ',' - change to plain text mode", "Shortcuts");
+            MessageBox.Show("Shortcuts:\n- CTRL + N - new file\n- CTRL + S - save file\n- CTRL + O - open file\n- CTRL + P - print file\n- CTRL + W - close file\n- CTRL + T - change theme\n-CTRL + F - find and replace\n- CTRL + '+' - increase font size\n- CTRL + '-' - decrease font size\n- CTRL + '.' - change to c++ mode\n- CTRL + ',' - change to plain text mode", "Shortcuts");
         }
 
         private void plainTextToolStripMenuItem_Click(object sender, EventArgs e)
