@@ -31,7 +31,176 @@ namespace PlainTextEditor
         private PrintPreviewDialog printPreviewDialog = new PrintPreviewDialog();
         private Panel panelLineNumbers;
 
+        private ToolStripMenuItem findReplaceMenuItem; // Menu item
+        private ToolStrip toolStripFindReplace;       // Find and Replace ToolStrip
+        private ToolStripTextBox findTextBox;
+        private ToolStripTextBox replaceTextBox;
+        private ToolStripButton findNextButton;
+        private ToolStripButton findPrevButton;
+        private ToolStripButton replaceButton;
+        private int currentSearchIndex = 0;
 
+        private void InitializeFindReplaceMenu()
+        {
+            findReplaceMenuItem = new ToolStripMenuItem("Find and Replace", null, FindReplaceMenuItem_Click);
+            menuStrip.Items.Add(findReplaceMenuItem);
+        }
+
+        private void FindReplaceInitEvent()
+        {
+            if (toolStripFindReplace == null)
+            {
+                // Initialize the ToolStrip for Find and Replace
+                toolStripFindReplace = new ToolStrip();
+
+                findTextBox = new ToolStripTextBox()
+                {
+                    ToolTipText = "Enter text to find"
+                };
+
+                replaceTextBox = new ToolStripTextBox()
+                {
+                    ToolTipText = "Enter text to replace"
+                };
+
+                findPrevButton = new ToolStripButton("<-", null, FindPrev_Click)
+                {
+                    ToolTipText = "Previous"
+                };
+
+                findNextButton = new ToolStripButton("->", null, FindNext_Click)
+                {
+                    ToolTipText = "Next"
+                };
+
+                replaceButton = new ToolStripButton("Replace", null, Replace_Click)
+                {
+                    ToolTipText = "Replace content"
+                };
+
+                // Adding components to the ToolStrip
+                toolStripFindReplace.Items.Add(new ToolStripLabel("Find: "));
+                toolStripFindReplace.Items.Add(findTextBox);
+                toolStripFindReplace.Items.Add(new ToolStripLabel("Replace:"));
+                toolStripFindReplace.Items.Add(replaceTextBox);
+                toolStripFindReplace.Items.Add(findPrevButton);
+                toolStripFindReplace.Items.Add(findNextButton);
+                toolStripFindReplace.Items.Add(replaceButton);
+
+                this.Controls.Add(toolStripFindReplace);
+                toolStripFindReplace.Dock = DockStyle.Top;
+                UpdateToolStripColor();
+            }
+            else
+            {
+                toolStripFindReplace.Visible = !toolStripFindReplace.Visible;
+                UpdateToolStripColor();
+            }
+        }
+
+        private void FindReplaceMenuItem_Click(object sender, EventArgs e)
+        {
+            FindReplaceInitEvent();
+        }
+
+        public class CustomRenderer : ToolStripRenderer
+        {
+            protected override void OnRenderToolStripBorder(ToolStripRenderEventArgs e)
+            {
+                // Don't render the border
+            }
+        }
+
+        private void UpdateToolStripColor()
+        {
+            if(toolStripFindReplace != null)
+            {
+                // Setting the ToolStrip's renderer to a custom renderer or no borders
+                toolStripFindReplace.Renderer = new CustomRenderer();
+                findTextBox.BorderStyle = BorderStyle.FixedSingle;
+                replaceTextBox.BorderStyle = BorderStyle.FixedSingle;
+
+                if (IsDarkTheme())
+                {
+                    toolStripFindReplace.BackColor = Color.FromArgb(40, 40, 40); // Dark background
+                    toolStripFindReplace.ForeColor = Color.White;               // Light text
+                    findTextBox.BackColor = Color.FromArgb(40, 40, 40);
+                    findTextBox.ForeColor = Color.White;
+                }
+                else
+                {
+                    toolStripFindReplace.BackColor = Color.LightGray;           // Light background
+                    toolStripFindReplace.ForeColor = Color.Black;               // Dark text
+                    findTextBox.BackColor = Color.LightGray;
+                    findTextBox.ForeColor = Color.Black;
+                }
+
+                // Update the colors for all child items of the menu
+                foreach (ToolStripItem item in toolStripFindReplace.Items)
+                {
+                    item.BackColor = toolStripFindReplace.BackColor;
+                    item.ForeColor = toolStripFindReplace.ForeColor;
+                }
+
+                // Force a redraw to ensure the changes take effect
+                toolStripFindReplace.Invalidate();
+                toolStripFindReplace.Refresh();
+            }
+        }
+
+        private void FindNext_Click(object sender, EventArgs e)
+        {
+            string searchText = findTextBox.Text;
+            if (string.IsNullOrEmpty(searchText)) return;
+
+            int startIndex = textBoxMain.SelectionStart + textBoxMain.SelectionLength;
+
+            // Search for the next occurence
+            currentSearchIndex = textBoxMain.Find(searchText, startIndex, RichTextBoxFinds.None);
+
+            if(currentSearchIndex >= 0)
+            {
+                textBoxMain.Select(currentSearchIndex, searchText.Length);
+                textBoxMain.ScrollToCaret();
+            }
+            else
+            {
+                MessageBox.Show("No further matches found.", "Find", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void FindPrev_Click(object sender, EventArgs e)
+        {
+            string searchText = findTextBox.Text;
+            if(string.IsNullOrEmpty(searchText)) return;
+
+            int startIndex = textBoxMain.SelectionStart - 1;
+
+            currentSearchIndex = textBoxMain.Find(searchText, 0, startIndex, RichTextBoxFinds.Reverse);
+
+            if(currentSearchIndex >= 0)
+            {
+                textBoxMain.Select(currentSearchIndex, searchText.Length);
+                textBoxMain.ScrollToCaret();
+            }
+            else
+            {
+                MessageBox.Show("No previous matches found.", "Find", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void Replace_Click(object sender, EventArgs e)
+        {
+            string searchText = findTextBox.Text;
+            string replacementText = replaceTextBox.Text;
+
+            if(string.IsNullOrEmpty (searchText)) return;
+
+            if (textBoxMain.SelectedText == searchText) textBoxMain.SelectedText = replacementText;
+
+            // Move to the next match
+            FindNext_Click(sender, e);
+        }
 
         // Import user32.dll to get scroll position if needed
         [DllImport("user32.dll")]
@@ -124,12 +293,14 @@ namespace PlainTextEditor
         public PlainTextEditor()
         {
             InitializeComponent();
+            InitializeFindReplaceMenu();
             InitializeStatusStrip();
             editTextSize();
             UpdateTitle();
             SetDarkTheme();
             AssignCustomRenderer();
             UpdateStatusCounts();
+
             printDocument.PrintPage += PrintDocument_PrintPage;
             textBoxMain.VScroll += TextBoxMain_VScroll;
             textBoxMain.TextChanged += TextBoxMain_TextChanged_ForLineNumbers;
@@ -146,18 +317,6 @@ namespace PlainTextEditor
             statusStrip.Items.Add(toolStripStatusLabelCharCount);
 
             this.Controls.Add(statusStrip);
-
-            // Set initial theme
-            if (IsDarkTheme())
-            {
-                statusStrip.BackColor = Color.FromArgb(40, 40, 40);
-                statusStrip.ForeColor = Color.White;
-            }
-            else
-            {
-                statusStrip.BackColor = Color.LightGray;
-                statusStrip.ForeColor = Color.Black;
-            }
         }
 
         [DllImport("dwmapi.dll", PreserveSig = false)]
@@ -314,6 +473,8 @@ namespace PlainTextEditor
             panelLineNumbers.BackColor = Color.White;
             panelLineNumbers.ForeColor = Color.Black;
 
+            UpdateToolStripColor();
+
             AssignCustomRenderer();
 
             // Set status strip colors
@@ -380,9 +541,17 @@ namespace PlainTextEditor
             cCToolStripMenuItem.ForeColor = Color.White;
             printToolStripMenuItem.ForeColor = Color.White;
 
+
+            statusStrip.BackColor = Color.FromArgb(40, 40, 40);
+            statusStrip.ForeColor = Color.White;
+
+
+
             // Set the background and foreground color of line numbers panel
             panelLineNumbers.BackColor = Color.FromArgb(40, 40, 40);
             panelLineNumbers.ForeColor = Color.White;
+
+            UpdateToolStripColor();
 
             AssignCustomRenderer(); // Ensure the renderer matches the theme
 
@@ -755,6 +924,7 @@ namespace PlainTextEditor
         /// Ctrl + "-" - decrease font size,
         /// Ctrl + T - change theme dark/light,
         /// Ctrl + W - close application
+        /// Ctrl + F - find and replace
         /// Ctrl + ',' - change to plain text mode
         /// Ctrl + '.' - change to c++ mode
         /// </summary>
@@ -763,6 +933,12 @@ namespace PlainTextEditor
         private void PlainTextEditor_KeyDown(object sender, KeyEventArgs e)
         {
             // Shortcut implementations
+            // Find and Replace
+            if(e.Control && e.KeyCode == Keys.F)
+            {
+                FindReplaceInitEvent();
+            }
+
             // Save Current File
             if (e.Control && e.KeyCode == Keys.S)
             {
@@ -913,10 +1089,10 @@ namespace PlainTextEditor
             }
 
             // Creating space block between {}
-            if(e.KeyCode == Keys.Enter)
+            if (e.KeyCode == Keys.Enter)
             {
                 int cursorPos = textBoxMain.SelectionStart;
-                if(textBoxMain.Text.Length > 0)
+                if (textBoxMain.Text.Length > 0)
                 {
                     char lastChar = textBoxMain.Text[cursorPos - 1];
                     if (lastChar == '{')
@@ -929,16 +1105,16 @@ namespace PlainTextEditor
             }
 
             // Deleting both brackets if one next to the other
-            if(e.KeyCode == Keys.Back)
+            if (e.KeyCode == Keys.Back)
             {
                 int cursorPos = textBoxMain.SelectionStart;
-                if(cursorPos > 0)
+                if (cursorPos > 0)
                 {
                     // Get the characters before the cursor and after the cursor
                     char prevChar = textBoxMain.Text[cursorPos - 1];
                     char nextChar = (cursorPos < textBoxMain.Text.Length) ? textBoxMain.Text[cursorPos] : '\0';
 
-                    if((prevChar == '(' && nextChar == ')') || (prevChar == '[' && prevChar == ']') || (prevChar == '{' && nextChar == '}'))
+                    if ((prevChar == '(' && nextChar == ')') || (prevChar == '[' && prevChar == ']') || (prevChar == '{' && nextChar == '}'))
                     {
                         // Remove both brackets
                         textBoxMain.Text = textBoxMain.Text.Remove(cursorPos - 1, 2);
