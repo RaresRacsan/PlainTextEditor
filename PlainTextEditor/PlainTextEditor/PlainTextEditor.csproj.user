@@ -4,6 +4,9 @@
     <Compile Update="EventHandlers.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="FileOperations.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="FindReplace.cs">
       <SubType>Form</SubType>
     </Compile>
