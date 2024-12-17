@@ -70,7 +70,9 @@ To run the project, you'll need:
    - To replace the found string, enter the replacement text in the Replace text box.
 
 ## Screenshots
-
+  <p align="center">
+  <img src="https://github.com/waldyr/Sublime-Installer/blob/master/sublime_text.png?raw=true" alt="Sublime's custom image"/>
+</p>
   <p align="center">
     <img src="https://github.com/user-attachments/assets/cac381af-463e-4579-9912-6d8ef4faa632" alt="Custom image/>
   </p>
