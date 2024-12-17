@@ -13,5 +13,8 @@
     <Compile Update="Print.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="Shortcuts.cs">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
 </Project>
