@@ -16,6 +16,9 @@
     <Compile Update="Shortcuts.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="StatusStrip.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Theme.cs">
       <SubType>Form</SubType>
     </Compile>
