@@ -25,6 +25,7 @@ PlainTextEditor is a simple text editor built using C# and Windows Forms. It pro
 - **Ctrl + '+/-'**: Increase/Decrease size of font.
 - **Ctrl + '.'**: Change to C++ mode.
 - **Ctrl + ','**: Change to Plain Text mode.
+  
 ## Technologies Used
 
 - C# (Windows Forms)
