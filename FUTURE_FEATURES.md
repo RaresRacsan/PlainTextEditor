@@ -2,7 +2,7 @@
 
 This document outlines the potential features planned for future versions of PlainTextEditor. These features aim to enhance the editor's functionality and provide users with a more robust and efficient text editing experience.
 
-## Feature Ideas
+## Feature Ideas - 3/7
 
 ### 1. ~~Line Numbers~~ :heavy_check_mark:
 - Display line numbers alongside the text editor for easier navigation and reference.
@@ -12,7 +12,7 @@ This document outlines the potential features planned for future versions of Pla
 
 ---
 
-### 2. Search and Replace
+### 2. ~~Search and Replace~~ :heavy_check_mark:
 - Add functionality to search for specific text within the editor, with an option to replace it.
 - **Benefits**: 
   - Speeds up the process of modifying repetitive text.
