@@ -2,7 +2,7 @@
 
 This document outlines the potential features planned for future versions of PlainTextEditor. These features aim to enhance the editor's functionality and provide users with a more robust and efficient text editing experience.
 
-## Feature Ideas - 3/7
+## Feature Ideas - 4/7
 
 ### 1. ~~Line Numbers~~ :heavy_check_mark:
 - Display line numbers alongside the text editor for easier navigation and reference.
@@ -39,7 +39,7 @@ This document outlines the potential features planned for future versions of Pla
 
 ---
 
-### 5. Customizable Colors
+### 5. ~~Customizable Colors~~ :heavy_check_mark:
 - Extend the existing light/dark theme functionality to allow users to fully customize colors.
 
 ---
