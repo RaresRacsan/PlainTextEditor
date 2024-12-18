@@ -38,6 +38,7 @@ namespace PlainTextEditor
         private ToolStripButton findPrevButton;
         private ToolStripButton replaceButton;
         private int currentSearchIndex = 0;
+        ToolStripMenuItem changeTextColorMenu = new ToolStripMenuItem("Change Text Color");
 
         // Import user32.dll to get scroll position if needed
         [DllImport("user32.dll")]
@@ -51,6 +52,9 @@ namespace PlainTextEditor
         public PlainTextEditor()
         {
             InitializeComponent();
+
+            InitTextColorMenu();
+
             InitializeFindReplaceMenu();    // FindReplace.cs
             InitializeStatusStrip();        // StatusStrip.cs
             editTextSize();                 // FileOperations.cs
@@ -58,6 +62,9 @@ namespace PlainTextEditor
             SetDarkTheme();                 // Theme.cs
             AssignCustomRenderer();         // Theme.cs
             UpdateStatusCounts();           // StatusStrip.cs
+            LoadColorSettings();            // Highlighting.cs
+            ApplyCppHighlighting();         // Highlighting.cs
+
 
             printDocument.PrintPage += PrintDocument_PrintPage;                 // Print.cs
             textBoxMain.VScroll += TextBoxMain_VScroll;                         // LineNumber.cs

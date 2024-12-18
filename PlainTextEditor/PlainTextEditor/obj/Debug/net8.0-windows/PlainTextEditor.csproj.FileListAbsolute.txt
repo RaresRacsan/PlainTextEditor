@@ -32,3 +32,6 @@ C:\Users\Rares\Documents\GitHub\PlainTextEditor\PlainTextEditor\PlainTextEditor\
 C:\Users\Rares\Documents\GitHub\PlainTextEditor\PlainTextEditor\PlainTextEditor\obj\Debug\net8.0-windows\PlainTextEditor.pdb
 C:\Users\Rares\Documents\GitHub\PlainTextEditor\PlainTextEditor\PlainTextEditor\obj\Debug\net8.0-windows\PlainTextEditor.genruntimeconfig.cache
 C:\Users\Rares\Documents\GitHub\PlainTextEditor\PlainTextEditor\PlainTextEditor\obj\Debug\net8.0-windows\ref\PlainTextEditor.dll
+C:\Users\Rares\Documents\GitHub\PlainTextEditor\PlainTextEditor\PlainTextEditor\bin\Debug\net8.0-windows\Newtonsoft.Json.dll
+C:\Users\Rares\Documents\GitHub\PlainTextEditor\PlainTextEditor\PlainTextEditor\obj\Debug\net8.0-windows\PlainTextEditor.csproj.AssemblyReference.cache
+C:\Users\Rares\Documents\GitHub\PlainTextEditor\PlainTextEditor\PlainTextEditor\obj\Debug\net8.0-windows\PlainTextEditor.csproj.CopyComplete

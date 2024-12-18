@@ -98,6 +98,15 @@ namespace PlainTextEditor
             toolStripStatusLabelWordCount.ForeColor = Color.Black;
             toolStripStatusLabelCharCount.ForeColor = Color.Black;
 
+            changeTextColorMenu.BackColor = Color.White;
+            changeTextColorMenu.ForeColor = Color.Black;
+
+            foreach (ToolStripItem item in changeTextColorMenu.DropDownItems)
+            {
+                item.BackColor = Color.White;
+                item.ForeColor = Color.Black;
+            }
+
             // Invalidate the panel to refresh line numbers
             panelLineNumbers.Invalidate();
         }
@@ -179,6 +188,15 @@ namespace PlainTextEditor
             statusStrip.ForeColor = Color.White;
             toolStripStatusLabelWordCount.ForeColor = Color.White;
             toolStripStatusLabelCharCount.ForeColor = Color.White;
+
+            changeTextColorMenu.BackColor = Color.FromArgb(40, 40, 40);
+            changeTextColorMenu.ForeColor = Color.White;
+
+            foreach (ToolStripItem item in changeTextColorMenu.DropDownItems)
+            {
+                item.BackColor = Color.FromArgb(40, 40, 40);
+                item.ForeColor = Color.White;
+            }
 
             // Invalidate the panel to refresh line numbers
             panelLineNumbers.Invalidate();
