@@ -110,6 +110,9 @@ namespace PlainTextEditor
             HighlightPattern(hiddenBuffer, "//.*?$", Color.LightGray, RegexOptions.Multiline); // Single-line comments
             HighlightPattern(hiddenBuffer, @"/\*.*?\*/", Color.LightGray, RegexOptions.Singleline); // Multi-line comments
 
+            // Highlight function names
+            HighlightPattern(hiddenBuffer, @"\b([a-zA-Z_][a-zA-Z_0-9]*)\s*(?=\()", Color.MediumPurple);
+
             // Replace the visible TextBox content with the highlighted content
             textBoxMain.Rtf = hiddenBuffer.Rtf;
 
