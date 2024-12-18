@@ -39,11 +39,8 @@ This document outlines the potential features planned for future versions of Pla
 
 ---
 
-### 5. Customizable Theme
-- Extend the existing light/dark theme functionality to allow users to fully customize colors, fonts, and editor appearance.
-- **Benefits**: 
-  - Improves accessibility for users with specific visual needs.
-  - Provides a personalized editing environment.
+### 5. Customizable Colors
+- Extend the existing light/dark theme functionality to allow users to fully customize colors.
 
 ---
 
