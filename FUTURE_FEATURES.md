@@ -51,7 +51,7 @@ This document outlines the potential features planned for future versions of Pla
 - Add an integrated compiler and debugger for C++ code written in the editor.
 - **Features**: 
   - Compile and run code directly from the editor.
-  - Display output/error messages in a separate pane.
+  - Display output/error messages in a separate panel.
 - **Benefits**: 
   - Transforms PlainTextEditor into a lightweight IDE for C++ programming.
   - Streamlines the workflow for developers.
