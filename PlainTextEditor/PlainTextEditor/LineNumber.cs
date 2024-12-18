@@ -5,6 +5,11 @@ namespace PlainTextEditor
 {
     public partial class PlainTextEditor : Form
     {
+        /// <summary>
+        /// Painting the panel containing the line numbers
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void panelLineNumbers_Paint(object sender, PaintEventArgs e)
         {
             panelLineNumbers.Width = 50;

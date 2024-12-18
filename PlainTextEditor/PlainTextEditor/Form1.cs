@@ -51,18 +51,18 @@ namespace PlainTextEditor
         public PlainTextEditor()
         {
             InitializeComponent();
-            InitializeFindReplaceMenu();
-            InitializeStatusStrip();
-            editTextSize();
-            UpdateTitle();
-            SetDarkTheme();
-            AssignCustomRenderer();
-            UpdateStatusCounts();
+            InitializeFindReplaceMenu();    // FindReplace.cs
+            InitializeStatusStrip();        // StatusStrip.cs
+            editTextSize();                 // FileOperations.cs
+            UpdateTitle();                  // FileOperations.cs
+            SetDarkTheme();                 // Theme.cs
+            AssignCustomRenderer();         // Theme.cs
+            UpdateStatusCounts();           // StatusStrip.cs
 
-            printDocument.PrintPage += PrintDocument_PrintPage;
-            textBoxMain.VScroll += TextBoxMain_VScroll;
-            textBoxMain.TextChanged += TextBoxMain_TextChanged_ForLineNumbers;
-            textBoxMain.Resize += TextBoxMain_Resize;
+            printDocument.PrintPage += PrintDocument_PrintPage;                 // Print.cs
+            textBoxMain.VScroll += TextBoxMain_VScroll;                         // LineNumber.cs
+            textBoxMain.TextChanged += TextBoxMain_TextChanged_ForLineNumbers;  // LineNumber.cs
+            textBoxMain.Resize += TextBoxMain_Resize;                           // LineNumber.cs
         }        
     }
 }

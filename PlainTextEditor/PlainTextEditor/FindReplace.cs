@@ -6,12 +6,18 @@ namespace PlainTextEditor
 {
     public partial class PlainTextEditor : Form
     {
+        /// <summary>
+        /// Initializing the find and replace menu item
+        /// </summary>
         private void InitializeFindReplaceMenu()
         {
             findReplaceMenuItem = new ToolStripMenuItem("Find and Replace", null, FindReplaceMenuItem_Click);
             menuStrip.Items.Add(findReplaceMenuItem);
         }
 
+        /// <summary>
+        /// Event for the find and replace toolstripmenuitem, creating its fields and assigning the functions to the buttons
+        /// </summary>
         private void FindReplaceInitEvent()
         {
             if (toolStripFindReplace == null)
@@ -34,20 +40,30 @@ namespace PlainTextEditor
 
                 this.Controls.Add(toolStripFindReplace);
                 toolStripFindReplace.Dock = DockStyle.Top;
-                UpdateToolStripColor();
+                UpdateToolStripColor(); // Theme.cs
             }
             else
             {
                 toolStripFindReplace.Visible = !toolStripFindReplace.Visible;
-                UpdateToolStripColor();
+                UpdateToolStripColor(); // Theme.cs
             }
         }
 
+        /// <summary>
+        /// Click event for the find and replace menu item
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FindReplaceMenuItem_Click(object sender, EventArgs e)
         {
             FindReplaceInitEvent();
         }
 
+        /// <summary>
+        /// Function to find the next wanted string in the textMainBox
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FindNext_Click(object sender, EventArgs e)
         {
             string searchText = findTextBox.Text;
@@ -67,6 +83,11 @@ namespace PlainTextEditor
             }
         }
 
+        /// <summary>
+        /// Function to search the previous wanted string in the textMainBox
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FindPrev_Click(object sender, EventArgs e)
         {
             string searchText = findTextBox.Text;
@@ -86,6 +107,11 @@ namespace PlainTextEditor
             }
         }
 
+        /// <summary>
+        /// Function to replace the current wanted string with another string that the user enters into the replaceTextBox
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Replace_Click(object sender, EventArgs e)
         {
             string searchText = findTextBox.Text;

@@ -6,16 +6,29 @@ namespace PlainTextEditor
 {
     public partial class PlainTextEditor : Form
     {
+        /// <summary>
+        /// Click event for the light theme menu item - change the current theme to light theme
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void lightThemeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SetLightTheme();
         }
 
+        /// <summary>
+        /// Click event for the dark theme menu item - change the current theme to dark theme
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void darkThemeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SetDarkTheme();
         }
 
+        /// <summary>
+        /// Setting all the components of the form to light theme
+        /// </summary>
         private void SetLightTheme()
         {
             SetTitleBarColor();
@@ -89,6 +102,9 @@ namespace PlainTextEditor
             panelLineNumbers.Invalidate();
         }
 
+        /// <summary>
+        /// Setting all the components of the form to dark theme
+        /// </summary>
         private void SetDarkTheme()
         {
             SetTitleBarColor();
@@ -168,11 +184,18 @@ namespace PlainTextEditor
             panelLineNumbers.Invalidate();
         }
 
+        /// <summary>
+        /// Helper function that checks whether the current theme is dark theme
+        /// </summary>
+        /// <returns></returns>
         private bool IsDarkTheme()
         {
             return menuStrip.BackColor == Color.FromArgb(40, 40, 40);
         }
 
+        /// <summary>
+        /// Helper function to assign the custom rendered to the menustrip
+        /// </summary>
         private void AssignCustomRenderer()
         {
             menuStrip.Renderer = new ToolStripProfessionalRenderer(new CustomColorTable(IsDarkTheme()));
@@ -294,12 +317,18 @@ namespace PlainTextEditor
             DWMWA_USE_IMMERSIVE_DARK_MODE = 20,
         }
 
+        /// <summary>
+        /// Helper function to enable the dark theme for the title bar
+        /// </summary>
         private void SetTitleBarColor()
         {
             uint value = 1; // Enable dark mode for the title bar
             DwmSetWindowAttribute(this.Handle, DWMWINDOWATTRIBUTE.DWMWA_USE_IMMERSIVE_DARK_MODE, ref value, (uint)Marshal.SizeOf(value));
         }
 
+        /// <summary>
+        /// Custom rendered for the toolstrip - no borders
+        /// </summary>
         public class CustomRenderer : ToolStripRenderer
         {
             protected override void OnRenderToolStripBorder(ToolStripRenderEventArgs e)
@@ -308,6 +337,9 @@ namespace PlainTextEditor
             }
         }
 
+        /// <summary>
+        /// Function that updates the color of the toolstrip depending on the current theme
+        /// </summary>
         private void UpdateToolStripColor()
         {
             if (toolStripFindReplace != null)

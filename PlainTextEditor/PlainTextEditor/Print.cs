@@ -7,6 +7,11 @@ namespace PlainTextEditor
 {
     public partial class PlainTextEditor : Form
     {
+        /// <summary>
+        /// Click event for printing the current file
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void printToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -24,6 +29,11 @@ namespace PlainTextEditor
             }
         }
 
+        /// <summary>
+        /// Implementation for the printing feature
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PrintDocument_PrintPage(object sender, PrintPageEventArgs e)
         {
             Font printFont = textBoxMain.Font;

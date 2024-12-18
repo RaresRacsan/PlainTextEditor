@@ -4,6 +4,9 @@ namespace PlainTextEditor
 {
     public partial class PlainTextEditor : Form
     {
+        /// <summary>
+        /// Initializing the status strip
+        /// </summary>
         private void InitializeStatusStrip()
         {
             statusStrip = new StatusStrip();
@@ -16,6 +19,10 @@ namespace PlainTextEditor
             this.Controls.Add(statusStrip);
         }
 
+        /// <summary>
+        /// Updating the status strip containing the number of words and characters that are 
+        /// currently in the textMainBox
+        /// </summary>
         private void UpdateStatusCounts()
         {
             string text = textBoxMain.Text;
