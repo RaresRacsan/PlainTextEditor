@@ -13,6 +13,7 @@ PlainTextEditor is a simple text editor built using C# and Windows Forms. It pro
 - **Keyboard Shortcuts**: Use keyboard shortcuts for efficient navigation and file operations.
 - **Bracket Matching**: Automatically closes the bracket.
 - **Find and Replace**: Find a string and replace it with something else if you want.
+- **Customizable text color for C++ editor**: Select any color for any of the keywords or revert to default.
 
 ## Keyboard Shortcuts
 - **Ctrl + N**: New File.
