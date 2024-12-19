@@ -40,6 +40,11 @@ namespace PlainTextEditor
         private int currentSearchIndex = 0;
         ToolStripMenuItem changeTextColorMenu = new ToolStripMenuItem("Change Text Color");
 
+        private List<int> bookmarks = new List<int>();
+        private bool isRightMouseDown = false;
+        private Dictionary<string, List<int>> allBookmarks = new Dictionary<string, List<int>>();
+        private readonly string bookmarksStoragePath;
+
         // Import user32.dll to get scroll position if needed
         [DllImport("user32.dll")]
         private static extern int GetScrollPos(IntPtr hWnd, int nBar);
@@ -53,8 +58,14 @@ namespace PlainTextEditor
         {
             InitializeComponent();
 
-            InitTextColorMenu();
+            bookmarksStoragePath = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+            "PlainTextEditor",
+            "bookmarks.json"
+            );
+            LoadAllBookmarks();
 
+            InitTextColorMenu();
             InitializeFindReplaceMenu();    // FindReplace.cs
             InitializeStatusStrip();        // StatusStrip.cs
             editTextSize();                 // FileOperations.cs
@@ -70,6 +81,27 @@ namespace PlainTextEditor
             textBoxMain.VScroll += TextBoxMain_VScroll;                         // LineNumber.cs
             textBoxMain.TextChanged += TextBoxMain_TextChanged_ForLineNumbers;  // LineNumber.cs
             textBoxMain.Resize += TextBoxMain_Resize;                           // LineNumber.cs
-        }        
+
+            textBoxMain.MouseDown += textBoxMain_MouseDown;
+        }
+
+        private void textBoxMain_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                isRightMouseDown = true;
+            }
+        }
+
+        private void textBoxMain_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right && isRightMouseDown)
+            {
+                int charIndex = textBoxMain.GetCharIndexFromPosition(e.Location);
+                int lineNumber = textBoxMain.GetLineFromCharIndex(charIndex);
+                ToggleBookmark(lineNumber);
+                isRightMouseDown = false;
+            }
+        }
     }
 }

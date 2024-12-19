@@ -68,6 +68,16 @@ namespace PlainTextEditor
                     originalFileContent = File.ReadAllText(currentFilePath);
                     textBoxMain.Text = File.ReadAllText(currentFilePath);
                     UpdateTitle();
+
+                    if (allBookmarks.ContainsKey(currentFilePath))
+                    {
+                        bookmarks = allBookmarks[currentFilePath];
+                        panelLineNumbers.Invalidate();
+                    }
+                    else
+                    {
+                        bookmarks = new List<int>();
+                    }
                 }
             }
 

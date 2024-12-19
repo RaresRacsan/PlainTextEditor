@@ -175,14 +175,14 @@ namespace PlainTextEditor
             // aToolStripMenuItem
             // 
             aToolStripMenuItem.Name = "aToolStripMenuItem";
-            aToolStripMenuItem.Size = new Size(180, 22);
+            aToolStripMenuItem.Size = new Size(124, 22);
             aToolStripMenuItem.Text = "About";
             aToolStripMenuItem.Click += aToolStripMenuItem_Click;
             // 
             // shortcutsToolStripMenuItem
             // 
             shortcutsToolStripMenuItem.Name = "shortcutsToolStripMenuItem";
-            shortcutsToolStripMenuItem.Size = new Size(180, 22);
+            shortcutsToolStripMenuItem.Size = new Size(124, 22);
             shortcutsToolStripMenuItem.Text = "Shortcuts";
             shortcutsToolStripMenuItem.Click += shortcutsToolStripMenuItem_Click;
             // 
@@ -196,6 +196,8 @@ namespace PlainTextEditor
             textBoxMain.TabIndex = 1;
             textBoxMain.Text = "";
             textBoxMain.TextChanged += textBoxMain_TextChanged;
+            textBoxMain.MouseDown += textBoxMain_MouseDown;
+            textBoxMain.MouseUp += textBoxMain_MouseUp;
             // 
             // panelLineNumbers
             // 
@@ -228,6 +230,7 @@ namespace PlainTextEditor
             menuStrip.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PlainTextEditor_FormClosing);
         }
 
         #endregion

@@ -24,6 +24,7 @@ namespace PlainTextEditor
         {
             File.WriteAllText(currentFilePath, textBoxMain.Text);
             originalFileContent = textBoxMain.Text;
+            SaveAllBookmarks();
             UpdateTitle();
         }
         
@@ -40,6 +41,7 @@ namespace PlainTextEditor
                 currentFilePath = saveFileDialog.FileName;
                 File.WriteAllText(currentFilePath, textBoxMain.Text);
                 originalFileContent = textBoxMain.Text;
+                SaveAllBookmarks();
                 UpdateTitle();
             }
         }

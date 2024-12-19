@@ -31,6 +31,7 @@ namespace PlainTextEditor
             textBoxMain.Clear();
             currentFilePath = null;
             originalFileContent = string.Empty;
+            bookmarks.Clear();
             UpdateTitle();
         }
 
@@ -45,6 +46,16 @@ namespace PlainTextEditor
                 originalFileContent = File.ReadAllText(currentFilePath);
                 textBoxMain.Text = File.ReadAllText(currentFilePath);
                 UpdateTitle();
+
+                if (allBookmarks.ContainsKey(currentFilePath))
+                {
+                    bookmarks = allBookmarks[currentFilePath];
+                    panelLineNumbers.Invalidate();
+                }
+                else
+                {
+                    bookmarks = new List<int>();
+                }
             }
         }
 
@@ -143,6 +154,11 @@ namespace PlainTextEditor
 
         private void PlainTextEditor_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (!string.IsNullOrEmpty(currentFilePath))
+            {
+                SaveAllBookmarks();
+            }
+
             if (!string.IsNullOrEmpty(textBoxMain.Text) && textBoxMain.Text != originalFileContent)
             {
                 var result = MessageBox.Show("Do you want to save changes?", "Unsaved Changes", MessageBoxButtons.YesNoCancel);

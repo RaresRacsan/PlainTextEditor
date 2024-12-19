@@ -6,7 +6,7 @@ namespace PlainTextEditor
     public partial class PlainTextEditor : Form
     {
         /// <summary>
-        /// Painting the panel containing the line numbers
+        /// Painting line numbers and bookmarks
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -14,37 +14,46 @@ namespace PlainTextEditor
         {
             panelLineNumbers.Width = 50;
 
-            // Determine the first visible line
             int firstVisibleLine = GetFirstVisibleLine(textBoxMain);
-
-            // Determine the total number of lines
             int totalLines = textBoxMain.GetLineFromCharIndex(textBoxMain.TextLength) + 1;
 
-
-            using (Font lineNumberFont = new Font(textBoxMain.Font.FontFamily, 12))
+            using (Font lineNumberFont = new Font(textBoxMain.Font.FontFamily, textBoxMain.Font.Size))
             {
-                float textLineHeight = textBoxMain.Font.GetHeight(e.Graphics);
-
-                float lineNumberLineHeight = lineNumberFont.GetHeight(e.Graphics);
-
-                float verticalOffset = (textLineHeight - lineNumberLineHeight) / 2;
-
-                int visibleLines = (int)(panelLineNumbers.Height / textLineHeight);
-
+                float lineHeight = textBoxMain.Font.GetHeight(e.Graphics);
+                float lineSpacing = lineHeight * 1.01f;
+                int verticalOffset = 3;
+                int visibleLines = (int)(panelLineNumbers.Height / lineSpacing);
                 Brush brush = new SolidBrush(panelLineNumbers.ForeColor);
 
                 for (int i = 0; i < visibleLines; i++)
                 {
                     int lineNumber = firstVisibleLine + i + 1;
-                    if (lineNumber > totalLines)
-                        break;
+                    if (lineNumber > totalLines) break;
 
-                    float yPosition = i * textLineHeight - (textBoxMain.GetPositionFromCharIndex(textBoxMain.GetFirstCharIndexFromLine(firstVisibleLine)).Y % textLineHeight) + verticalOffset;
-
+                    float yPosition = (i * lineSpacing) + verticalOffset;
                     string lineNumberText = lineNumber.ToString();
-                    SizeF textSize = e.Graphics.MeasureString(lineNumberText, lineNumberFont);
+                    Size textSize = TextRenderer.MeasureText(lineNumberText, lineNumberFont);
+                    Point drawPoint = new Point(
+                        panelLineNumbers.Width - textSize.Width - 5,
+                        (int)yPosition
+                    );
 
-                    e.Graphics.DrawString(lineNumberText, lineNumberFont, brush, panelLineNumbers.Width - textSize.Width - 5, yPosition);
+                    TextRenderer.DrawText(
+                        e.Graphics,
+                        lineNumberText,
+                        lineNumberFont,
+                        drawPoint,
+                        panelLineNumbers.ForeColor,
+                        Color.Transparent,
+                        TextFormatFlags.NoPadding
+                    );
+
+                    // Draw bookmark if exists for this line
+                    if (bookmarks.Contains(lineNumber))
+                    {
+                        float bookmarkY = yPosition + (lineHeight / 4);
+                        e.Graphics.FillEllipse(Brushes.Red, new RectangleF(5, bookmarkY, 8, 8));
+                    }
                 }
             }
         }
