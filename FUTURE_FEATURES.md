@@ -2,7 +2,7 @@
 
 This document outlines the potential features planned for future versions of PlainTextEditor. These features aim to enhance the editor's functionality and provide users with a more robust and efficient text editing experience.
 
-## Feature Ideas - 4/7
+## Feature Ideas - 5/7
 
 ### 1. ~~Line Numbers~~ :heavy_check_mark:
 - Display line numbers alongside the text editor for easier navigation and reference.
@@ -20,7 +20,7 @@ This document outlines the potential features planned for future versions of Pla
 
 ---
 
-### 3. Bookmarks
+### 3. ~~Bookmarks~~ :heavy_check_mark:
 - Allow users to bookmark specific lines for quick navigation within a document.
 - **Features**: 
   - Toggle bookmarks on/off for selected lines.
