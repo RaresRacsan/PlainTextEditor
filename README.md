@@ -76,7 +76,7 @@ To run the project, you'll need:
 
 ## Screenshots
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/cac381af-463e-4579-9912-6d8ef4faa632" alt="Custom image"/>
+  <img src="https://github.com/user-attachments/assets/f4fb0c77-a640-404b-820a-4dfd792d163a" alt="Custom image"/>
 </p>
 <p align="center">
   <img src="https://github.com/user-attachments/assets/31fc89a9-3702-46b0-830a-a5c260975034" alt="Custom image"/>
