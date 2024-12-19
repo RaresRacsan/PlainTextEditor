@@ -14,6 +14,7 @@ PlainTextEditor is a simple text editor built using C# and Windows Forms. It pro
 - **Bracket Matching**: Automatically closes the bracket.
 - **Find and Replace**: Find a string and replace it with something else if you want.
 - **Customizable text color for C++ editor**: Select any color for any of the keywords or revert to default.
+- **Bookmarks**: Bookmark any line of code, it helps you find it easier.
 
 ## Keyboard Shortcuts
 - **Ctrl + N**: New File.
@@ -69,6 +70,9 @@ To run the project, you'll need:
 9. Find and Replace:
    - In the Find text box, enter the string you want to search for.
    - To replace the found string, enter the replacement text in the Replace text box.
+10. Bookmark:
+   - Right click on a lane to bookmark it,
+   - Bookmarks are locally store at: `%AppData%\PlainTextEditor\bookmarks.json`.
 
 ## Screenshots
 <p align="center">
