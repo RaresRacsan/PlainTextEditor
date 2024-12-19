@@ -201,5 +201,24 @@ namespace PlainTextEditor
             // Invalidate the line numbers panel to trigger repaint
             panelLineNumbers.Invalidate();
         }
+
+        private void textBoxMain_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                isRightMouseDown = true;
+            }
+        }
+
+        private void textBoxMain_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right && isRightMouseDown)
+            {
+                int charIndex = textBoxMain.GetCharIndexFromPosition(e.Location);
+                int lineNumber = textBoxMain.GetLineFromCharIndex(charIndex);
+                ToggleBookmark(lineNumber);
+                isRightMouseDown = false;
+            }
+        }
     } 
 }

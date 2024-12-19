@@ -56,14 +56,14 @@ namespace PlainTextEditor
         /// </summary>
         public PlainTextEditor()
         {
-            InitializeComponent();
+            InitializeComponent();          // Form1.Designer.cs
 
             bookmarksStoragePath = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
             "PlainTextEditor",
             "bookmarks.json"
             );
-            LoadAllBookmarks();
+            LoadAllBookmarks();             // Bookmarks.cs
 
             InitTextColorMenu();
             InitializeFindReplaceMenu();    // FindReplace.cs
@@ -82,26 +82,7 @@ namespace PlainTextEditor
             textBoxMain.TextChanged += TextBoxMain_TextChanged_ForLineNumbers;  // LineNumber.cs
             textBoxMain.Resize += TextBoxMain_Resize;                           // LineNumber.cs
 
-            textBoxMain.MouseDown += textBoxMain_MouseDown;
-        }
-
-        private void textBoxMain_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Right)
-            {
-                isRightMouseDown = true;
-            }
-        }
-
-        private void textBoxMain_MouseUp(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Right && isRightMouseDown)
-            {
-                int charIndex = textBoxMain.GetCharIndexFromPosition(e.Location);
-                int lineNumber = textBoxMain.GetLineFromCharIndex(charIndex);
-                ToggleBookmark(lineNumber);
-                isRightMouseDown = false;
-            }
+            textBoxMain.MouseDown += textBoxMain_MouseDown;                     // EventHandlers.cs
         }
     }
 }
