@@ -79,7 +79,7 @@ To run the project, you'll need:
   <img src="https://github.com/user-attachments/assets/f4fb0c77-a640-404b-820a-4dfd792d163a" alt="Custom image"/>
 </p>
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/31fc89a9-3702-46b0-830a-a5c260975034" alt="Custom image"/>
+  <img src="https://github.com/user-attachments/assets/e9a5c1c5-4c96-47f7-885f-59aceeaac375" alt="Custom image"/>
 </p>
 
 ## File Operations
